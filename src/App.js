@@ -9,6 +9,8 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
+import { StoreProvider } from "./utils/GlobalState";
+import { AuthProvider } from "./utils/AuthContext";
 import "./App.css";
 
 // TODO: Dan, research material UI themeing context
@@ -17,21 +19,23 @@ theme = responsiveFontSizes(theme);
 
 function App() {
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <Router>
-          <div className='wrapper'>
-            <Nav />
-            <Switch>
-              <Route exact path='/' component={Landing} />
-              <Route path='/' render={() => <div>NOTFOUND</div>} />
-            </Switch>
-            <Footer />
-          </div>
-        </Router>
-      </ThemeProvider>
-    </React.Fragment>
+    <AuthProvider>
+      <StoreProvider>
+        <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <Router>
+            <div className='wrapper'>
+              <Nav />
+              <Switch>
+                <Route exact path='/' component={Landing} />
+                <Route path='/' render={() => <div>NOTFOUND</div>} />
+              </Switch>
+              <Footer />
+            </div>
+          </Router>
+        </ThemeProvider>
+      </StoreProvider>
+    </AuthProvider>
   );
 }
 

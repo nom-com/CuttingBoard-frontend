@@ -1,0 +1,17 @@
+export const LOGIN_USER = "LOGIN_USER";
+export const SIGNUP_USER = "SIGNUP_USER";
+export const LOGOUT_USER = "LOGOUT_USER";
+export const DELETE_USER  = "DELETE_USER";
+export const UPDATE_USER = "UPDATE_USER";
+export const CREATE_USER = "CREATE_USER";
+
+export const LOADING = "LOADING";
+
+export const GET_RECIPES = "GET_RECIPES";
+export const UPDATE_RECIPE = "UPDATE_RECIPE";
+export const DELETE_RECIPE = "DELETE_RECIPE";
+export const CREATE_RECIPE = "CREATE_RECIPE";
+
+export const GET_SHOPPING_LIST = "GET_SHOPPING_LIST";
+export const UPDATE_SHOPPING_LIST = "UPDATE_SHOPPING_LIST";
+export const CREATE_SHOPPING_LIST = "CREATE_SHOPPING_LIST";
