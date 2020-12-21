@@ -8,11 +8,11 @@ import {
 const AuthContext = createContext();
 const { Provider } = AuthContext;
 
-const authReducer = (state, action) => {
+const authReducer = (authState, action) => {
   switch (action.type) {
     case LOGIN_USER:
       return {
-        ...state,
+        ...authState,
         username: action.username,
         admin: action.admin,
         loading: false,
@@ -20,7 +20,7 @@ const authReducer = (state, action) => {
 
     case LOGOUT_USER:
       return {
-        ...state,
+        ...authState,
         username: null,
         admin: false,
         loading: false,
@@ -28,24 +28,24 @@ const authReducer = (state, action) => {
 
     case UPDATE_USER:
       return {
-        ...state,
+        ...authState,
         username: action.username,
         loading: false,
       };
 
     default:
-      return state;
+      return authState;
   }
 };
 
 const AuthProvider = ({ value = [], ...props }) => {
-  const [state, dispatch] = useReducer(authReducer, {
+  const [authState, authDispatch] = useReducer(authReducer, {
     username: null,
     admin: false,
     loading: false
   });
 
-  return <Provider value={[state, dispatch]} {...props} />;
+  return <Provider value={[authState, authDispatch]} {...props} />;
 };
 
 const useAuthContext = () => {
