@@ -15,7 +15,7 @@ const LoginForm = () => {
       <form>
         <div id="login-form">
             <h1>Login</h1>
-            {(errorMessage != "") ? (<div className="error-message">{errorMessage}ERROR</div>) : ""}
+            {(errorMessage != "") ? (<div className="error-message">{errorMessage}</div>) : ""}
             <div className="form-group">
                 <label htmlFor="username">Username: </label>
                 <input type="text" name="username" id="username" value={userForm.username} onChange={e => setUserForm({...userForm, username: e.target.value})}/>
