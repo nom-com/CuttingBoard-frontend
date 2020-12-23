@@ -1,6 +1,8 @@
 import React from "react";
 import { useAuthContext } from "../utils/AuthContext";
 import { LOGIN_USER, LOGOUT_USER } from "../utils/actions";
+import LoginForm from "../components/LoginForm";
+import Logout from "../components/Logout";
 
 const Landing = () => {
 
@@ -12,16 +14,17 @@ const Landing = () => {
       {authState.username ? (
         <div>Welcome back, {authState.username}</div>
       ) : (
-        <div>You are not logged in.</div>
+        <LoginForm/>
       )}
       {authState.username ? (
-        <button onClick={() => authDispatch({ type: LOGOUT_USER })}>Logout</button>
+        /*<button onClick={() => authDispatch({ type: LOGOUT_USER })}>Logout</button>*/
+        <Logout/>
       ) : (
         <button
           onClick={() =>
             authDispatch({ type: LOGIN_USER, username: "Test", admin: false })
           }>
-          Login
+          Old Test Login
         </button>
       )}
     </div>
