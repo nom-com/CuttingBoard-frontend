@@ -14,15 +14,12 @@ import { StoreProvider } from "./utils/GlobalState";
 import { AuthProvider } from "./utils/AuthContext";
 import "./App.css";
 import UserAccountForm from "./components/UserAccountForm";
-<<<<<<< HEAD
 import RecipeCreateEditForm from "./components/RecipeCreateEditForm";
-=======
 import Favorites from "./pages/Favorites";
 import Admin from "./pages/Admin";
 import Recipe from "./pages/Recipe";
 import UserAccount from "./pages/UserAccount";
 import Search from "./pages/Search";
->>>>>>> dev
 
 // TODO: Dan, research material UI themeing context
 let theme = createMuiTheme();
