@@ -19,6 +19,9 @@ const Nav = () => {
       <Grid item>
         <ListItemLink to='/what' primary='404TEST' />
       </Grid>
+      <Grid item>
+        <ListItemLink to='/signup' primary='Signup' />
+      </Grid>
     </Grid>
   );
 };
