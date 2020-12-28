@@ -6,21 +6,18 @@ import Container from "@material-ui/core/Container";
 import Logout from "../components/Logout";
 
 const Landing = () => {
-
   const [authState, authDispatch] = useAuthContext();
 
   return (
-    <Container>
-      <div>
+    <div className='page-body-content'>
+      <Container>
         {authState.username ? (
-          <div>
-            Welcome back, {authState.username}
-          </div>
+          <div>Welcome back, {authState.username}</div>
         ) : (
-          <LoginForm/>
+          <LoginForm />
         )}
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
