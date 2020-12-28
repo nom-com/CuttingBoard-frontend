@@ -14,6 +14,11 @@ import { StoreProvider } from "./utils/GlobalState";
 import { AuthProvider } from "./utils/AuthContext";
 import "./App.css";
 import UserAccountForm from "./components/UserAccountForm";
+import Favorites from "./pages/Favorites";
+import Admin from "./pages/Admin";
+import Recipe from "./pages/Recipe";
+import UserAccount from "./pages/UserAccount";
+import Search from "./pages/Search";
 
 // TODO: Dan, research material UI themeing context
 let theme = createMuiTheme();
@@ -32,6 +37,11 @@ function App() {
                 <Route exact path='/' component={Landing} />
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/signup' component={UserAccountForm} />
+                <Route exact path='/favorites' component={Favorites}/>
+                <Route exact path='/admin' component={Admin}/>
+                <Route exact path='/recipe/:id' component={Recipe}/>
+                <Route exact path='/search' component={Search}/>
+                <Route exact path='/user-account' component={UserAccount}/>
                 <Route path='/' render={() => <div>NOTFOUND</div>} />
               </Switch>
               <Footer />
