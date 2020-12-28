@@ -14,11 +14,15 @@ import { StoreProvider } from "./utils/GlobalState";
 import { AuthProvider } from "./utils/AuthContext";
 import "./App.css";
 import UserAccountForm from "./components/UserAccountForm";
+<<<<<<< HEAD
+import RecipeCreateEditForm from "./components/RecipeCreateEditForm";
+=======
 import Favorites from "./pages/Favorites";
 import Admin from "./pages/Admin";
 import Recipe from "./pages/Recipe";
 import UserAccount from "./pages/UserAccount";
 import Search from "./pages/Search";
+>>>>>>> dev
 
 // TODO: Dan, research material UI themeing context
 let theme = createMuiTheme();
@@ -37,6 +41,7 @@ function App() {
                 <Route exact path='/' component={Landing} />
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/signup' component={UserAccountForm} />
+                <Route exact path='/recipe-form' component={RecipeCreateEditForm}/>
                 <Route exact path='/favorites' component={Favorites}/>
                 <Route exact path='/admin' component={Admin}/>
                 <Route exact path='/recipe/:id' component={Recipe}/>
