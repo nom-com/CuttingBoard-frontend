@@ -30,6 +30,9 @@ const Nav = () => {
           <ListItemLink to='/login' primary='Login' />
         </Grid>
       )}
+      <Grid item>
+        <ListItemLink to='/signup' primary='Signup' />
+      </Grid>
     </Grid>
   );
 };

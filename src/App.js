@@ -13,6 +13,7 @@ import {
 import { StoreProvider } from "./utils/GlobalState";
 import { AuthProvider } from "./utils/AuthContext";
 import "./App.css";
+import UserAccountForm from "./components/UserAccountForm";
 
 // TODO: Dan, research material UI themeing context
 let theme = createMuiTheme();
@@ -30,6 +31,7 @@ function App() {
               <Switch>
                 <Route exact path='/' component={Landing} />
                 <Route exact path='/login' component={Login} />
+                <Route exact path='/signup' component={UserAccountForm} />
                 <Route path='/' render={() => <div>NOTFOUND</div>} />
               </Switch>
               <Footer />
