@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./pages/Landing";
+import Login from "./pages/Login";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -28,6 +29,7 @@ function App() {
               <Nav />
               <Switch>
                 <Route exact path='/' component={Landing} />
+                <Route exact path='/login' component={Login} />
                 <Route path='/' render={() => <div>NOTFOUND</div>} />
               </Switch>
               <Footer />
