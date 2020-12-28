@@ -9,7 +9,9 @@ const Logout = () => {
     const [authState, authDispatch] = useAuthContext();
     
     return (
-        <Button onClick={() => authDispatch({ type: LOGOUT_USER })}>Logout</Button>
+        <Container>
+            <Button onClick={() => authDispatch({ type: LOGOUT_USER })}>Logout</Button>
+        </Container>
     )
 }
 

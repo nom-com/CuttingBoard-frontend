@@ -23,14 +23,13 @@ const Nav = () => {
       </Grid>
       {authState.username ? (
         <Grid item>
-          <Logout/>
+            <Logout/>
         </Grid>
       ) : (
         <Grid item>
           <ListItemLink to='/login' primary='Login' />
         </Grid>
-      )
-      }
+      )}
     </Grid>
   );
 };
