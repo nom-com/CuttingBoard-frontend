@@ -3,9 +3,11 @@ import Grid from "@material-ui/core/Grid";
 import ListItemLink from "../components/ListItemLink";
 // import AuthMenu from "../components/AuthMenu";
 // import { authContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../utils/AuthContext";
+import Logout from "../components/Logout";
 
 const Nav = () => {
-  //   const { auth } = useContext(authContext);
+  const [authState, authDispatch] = useAuthContext();
   return (
     <Grid
       container
@@ -17,8 +19,41 @@ const Nav = () => {
         <ListItemLink to='/' primary='Home' />
       </Grid>
       <Grid item>
-        <ListItemLink to='/what' primary='404TEST' />
+        <ListItemLink to='/recipe/12' primary='Recipe' />
       </Grid>
+      <Grid item>
+        <ListItemLink to='/search' primary='Search' />
+      </Grid>
+      {authState.username ? (
+        <React.Fragment>
+          {authState.admin ? (
+            <Grid item>
+            <ListItemLink to='/admin' primary='Admin' />
+          </Grid>
+          ) : (
+            <React.Fragment></React.Fragment>
+          )}
+          <Grid item>
+            <ListItemLink to='/favorites' primary='Favorites' />
+          </Grid>
+          <Grid item>
+            <ListItemLink to='/user-account' primary='User Account' />
+          </Grid>
+          <Grid item>
+            <Logout />
+          </Grid>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+
+        <Grid item>
+          <ListItemLink to='/login' primary='Login' />
+        </Grid>
+              <Grid item>
+              <ListItemLink to='/signup' primary='Signup' />
+            </Grid>
+        </React.Fragment>
+      )}
     </Grid>
   );
 };

@@ -7,7 +7,7 @@ const Landing = () => {
   const [authState, authDispatch] = useAuthContext();
 
   return (
-    <div>
+    <div className='page-body-content'>
       <h1>Home</h1>
       {authState.username ? (
         <div>Welcome back, {authState.username}</div>
@@ -19,7 +19,7 @@ const Landing = () => {
       ) : (
         <button
           onClick={() =>
-            authDispatch({ type: LOGIN_USER, username: "Test", admin: false })
+            authDispatch({ type: LOGIN_USER, username: "Test", admin: true })
           }>
           Login
         </button>
