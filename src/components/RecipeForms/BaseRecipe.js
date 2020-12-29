@@ -8,26 +8,25 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import Icon from "@material-ui/core/Icon";
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import API from "../utils/API";
+// import API from "../../utils/API";
 
 const recipeSubmit = (
   values,
   { setSubmitting, resetForm, setFieldError, setStatus }
 ) => {
   setTimeout(() => {
-    // USERNAME IS UNIQUE, FINALIZE CALL TO API
     alert(JSON.stringify(values, null, 2));
     // resetForm();
-    // USERNAME EXISTS STOP SUBMISSION DON"T CALL API
     setSubmitting(false);
   }, 1000);
 };
 
 const RecipeForm = props => {
   const {
+    editForm,
     values,
     touched,
     errors,
@@ -68,8 +67,12 @@ const RecipeForm = props => {
           onSubmit={handleSubmit}>
           <Grid container direction='row' justify='center' alignItems='center'>
             <Grid item>
-              <Typography variant='h2'>Create/Edit Recipe</Typography>
-              <Divider />
+              <Typography variant='h2'>
+                {editForm ? "Edit Recipe" : "Create Recipe"}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider style={{ marginTop: 10, marginBottom: 20 }} />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -89,6 +92,28 @@ const RecipeForm = props => {
                 }}
                 variant='outlined'
               />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                select
+                id='category'
+                name='category'
+                label='Select a Category'
+                margin='dense'
+                variant='outlined'
+                error={touched.category && Boolean(errors.category)}
+                onChange={handleChange}
+                value={values.category}
+                helperText={
+                  touched.category && errors.category ? errors.category : " "
+                }
+                fullWidth>
+                {recipeCategory.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -154,37 +179,15 @@ const RecipeForm = props => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                select
-                id='category'
-                name='category'
-                label='Recipe Category'
-                margin='dense'
-                variant='outlined'
-                error={touched.category && Boolean(errors.category)}
-                onChange={handleChange}
-                value={values.category}
-                helperText={
-                    touched.category && errors.category
-                      ? errors.category
-                      : " "
-                  }
-                fullWidth>
-                {recipeCategory.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Divider style={{ marginTop: 20, marginBottom: 20 }} />
             </Grid>
             <Grid container item justify='flex-end' alignItems='flex-end'>
               <Button
                 type='submit'
                 variant='outlined'
-                color='default'
                 disabled={isSubmitting}
-                endIcon={<Icon>send</Icon>}>
-                Submit
+                endIcon={<NavigateNextIcon/>}>
+                Next
               </Button>
             </Grid>
           </Grid>
@@ -194,7 +197,7 @@ const RecipeForm = props => {
   );
 };
 
-const RecipeCreateEditForm = withFormik({
+const BaseRecipe = withFormik({
   mapPropsToValues: ({
     title,
     imageLocation,
@@ -206,7 +209,7 @@ const RecipeCreateEditForm = withFormik({
       title: title || "",
       imageLocation: imageLocation || "",
       description: description || "",
-      isPublic: isPublic || true,
+      isPublic: isPublic || false,
       category: category || "",
     };
   },
@@ -222,4 +225,4 @@ const RecipeCreateEditForm = withFormik({
   handleSubmit: recipeSubmit,
 })(RecipeForm);
 
-export default RecipeCreateEditForm;
+export default BaseRecipe;
