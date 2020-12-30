@@ -1,16 +1,11 @@
 import React, { createContext, useReducer, useContext } from "react";
-import {
-  LOGIN_USER,
-  LOGOUT_USER,
-  UPDATE_USER,
-} from "./actions";
 
 const AuthContext = createContext();
 const { Provider } = AuthContext;
 
 const authReducer = (authState, action) => {
   switch (action.type) {
-    case LOGIN_USER:
+    case "LOGIN_USER":
       return {
         ...authState,
         username: action.username,
@@ -18,7 +13,7 @@ const authReducer = (authState, action) => {
         loading: false,
       };
 
-    case LOGOUT_USER:
+    case "LOGOUT_USER":
       return {
         ...authState,
         username: null,
@@ -26,7 +21,7 @@ const authReducer = (authState, action) => {
         loading: false,
       };
 
-    case UPDATE_USER:
+    case "UPDATE_USER":
       return {
         ...authState,
         username: action.username,
