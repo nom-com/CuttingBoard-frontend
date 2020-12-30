@@ -8,19 +8,29 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 const ingredientSubmit = values => {
   console.log("onSubmit", JSON.stringify(values, null, 2));
 };
 
 const validationSchema = Yup.object().shape({
-  ingredients: Yup.array().of(
-    Yup.object().shape({
-      ingredientName: Yup.string().required("Ingredient is required"),
-      ingredientAmount: Yup.string().required("Amount is required"),
-    })
-  ),
+  ingredients: Yup.array()
+    .of(
+      Yup.object().shape({
+        ingredientName: Yup.string().required("Ingredient is required"),
+        ingredientAmount: Yup.string().required("Amount is required"),
+      }).test("unique", "Duplicate ingredient in list", function validateUnique(currentIngredient){
+        const otherIngredients = this.parent.filter(ingredient => ingredient !== currentIngredient);
+        const isDuplicate = otherIngredients.some(
+          ingredient => ingredient.ingredientName === currentIngredient.ingredientName
+        );
+        return isDuplicate
+          ? this.createError({ path: `${this.path}.ingredientName` })
+          : true;
+      })
+    )
+
 });
 
 const debug = false;
@@ -143,7 +153,7 @@ const RecipeIngredients = ({ editForm }) => {
                                   size='small'
                                   error={Boolean(touchedName && errorName)}
                                   helperText={
-                                    touchedName && errorName ? errorName : " "
+                                     touchedName && errorName ? errorName : " "
                                   }
                                   fullWidth
                                   variant='outlined'
@@ -172,6 +182,7 @@ const RecipeIngredients = ({ editForm }) => {
                           <Grid item xs={1}>
                             <IconButton
                               aria-label='delete'
+                              disabled={index===0}
                               onClick={() => remove(index)}>
                               <ClearIcon />
                             </IconButton>
@@ -211,7 +222,7 @@ const RecipeIngredients = ({ editForm }) => {
                   type='submit'
                   variant='outlined'
                   // disabled={!isValid || values.ingredients.length === 0}
-                  endIcon={<NavigateNextIcon/>}>
+                  endIcon={<NavigateNextIcon />}>
                   next
                 </Button>
               </Grid>
