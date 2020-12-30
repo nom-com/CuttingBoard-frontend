@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import { useAuthContext } from "../utils/AuthContext";
-import { LOGIN_USER } from "../utils/actions";
 import doLogin from "../utils/API";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -20,7 +19,7 @@ const LoginForm = () => {
     doLogin.doLogin(userForm)
     .then (() => {
         authState.username = userForm.username;
-        authDispatch({ type: LOGIN_USER, username: authState.username, admin: false});
+        authDispatch({ type: "LOGIN_USER", username: authState.username, admin: false});
         console.log("Login Successful");
     })
     .catch (() => {

@@ -1,8 +1,7 @@
-import axios from "axios";
-
 export default {
   /* baseURL: "http://",
   
+    TO BE DISMANTLED
     TODO create API Object methods
     
     doLogin: function(loginObj) {
