@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuthContext } from "../utils/AuthContext";
+import RecipeGlanceFrame from "../components/RecipeGlanceFrame";
 
 const Landing = () => {
   const [authState, authDispatch] = useAuthContext();
@@ -24,6 +25,7 @@ const Landing = () => {
           Login
         </button>
       )}
+      <RecipeGlanceFrame/>
     </div>
   );
 };
