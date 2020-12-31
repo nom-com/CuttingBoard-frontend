@@ -40,7 +40,8 @@ const reducer = (state, action) => {
     case SET_RECOMMENDED_RECIPES:
       return {
         ...state,
-        recommendedRecipes: action.recipes
+        recommendedRecipes: action.recipes, 
+        loading: false
       };
     case SET_RECIPES:
       return {
