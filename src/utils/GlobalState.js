@@ -90,7 +90,8 @@ const reducer = (state, action) => {
     case SET_FAVORITES:
       return {
         ...state,
-        favorites: action.favorites
+        favorites: action.favorites,
+        loading: false
       };
     case SET_SHOPPING_LIST:
       return {
