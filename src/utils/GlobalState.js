@@ -96,7 +96,8 @@ const reducer = (state, action) => {
     case SET_SHOPPING_LIST:
       return {
         ...state,
-        shoppingList: action.shoppingList
+        shoppingList: action.shoppingList,
+        loading: false
       };
     default:
       return state;

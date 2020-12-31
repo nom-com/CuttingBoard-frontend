@@ -20,6 +20,7 @@ import Admin from "./pages/Admin";
 import Recipe from "./pages/Recipe";
 import UserAccount from "./pages/UserAccount";
 import Search from "./pages/Search";
+import ShoppingList from "./pages/ShoppingList";
 
 // TODO: Dan, research material UI themeing context
 let theme = createMuiTheme();
@@ -44,6 +45,7 @@ function App() {
                 <Route exact path='/recipe/:id' component={Recipe}/>
                 <Route exact path='/search' component={Search}/>
                 <Route exact path='/user-account' component={UserAccount}/>
+                <Route exact path='/shopping-list' component={ShoppingList}/>
                 <Route path='/' render={() => <div>NOTFOUND</div>} />
               </Switch>
               <Footer />
