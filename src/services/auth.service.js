@@ -7,14 +7,6 @@ class AuthService {
       username,
       password,
     });
-    // HANDLE AT THE API CALL in components THEN call state-reducers
-    //   .then(response => {
-    //     if (response.data.accessToken) {
-    //       localStorage.setItem("user", JSON.stringify(response.data));
-    //     }
-
-    //     return response.data;
-    //   });
   }
 
   logout() {
