@@ -128,6 +128,7 @@ const FavoritesTable = () => {
                 <Typography variant='subtitle1'>
                   no favorite recipes found
                 </Typography>
+                {/* TO BE DELETED */}
                 <button onClick={() => setFavorites()}>
                   POPULATE DUMMY DATA
                 </button>
