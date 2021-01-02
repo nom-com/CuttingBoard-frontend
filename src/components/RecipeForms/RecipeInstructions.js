@@ -8,10 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
-const instructionSubmit = values => {
-  console.log("onSubmit", JSON.stringify(values, null, 2));
-};
+import { useStoreContext } from "../../utils/GlobalState";
+import { SET_INSTRUCTIONS } from "../../utils/actions";
 
 const validationSchema = Yup.object().shape({
   instructions: Yup.array().of(
@@ -21,9 +19,28 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-const debug = false;
-
 const RecipeInstructions = ({ editForm }) => {
+  
+  const [state, dispatch] = useStoreContext();
+  const debug = true;
+
+  const instructionSubmit = values => {
+    const parsedInstructions = values.instructions.map((instruction, index) => {
+      return {
+        step: {
+          step: instruction.instruction
+        },
+        stepOrder: index +1
+      }
+    })
+
+    dispatch({
+      type: SET_INSTRUCTIONS,
+      instructions: parsedInstructions
+    })
+  };
+
+
   return (
     <div className='page-body-content'>
       <Paper>
@@ -31,7 +48,6 @@ const RecipeInstructions = ({ editForm }) => {
           initialValues={{
             instructions: [
               {
-                id: Math.random(),
                 instruction: "",
               },
             ],
@@ -157,7 +173,7 @@ const RecipeInstructions = ({ editForm }) => {
                   <pre style={{ textAlign: "left" }}>
                     <strong>Values</strong>
                     <br />
-                    {JSON.stringify(values, null, 2)}
+                    {JSON.stringify(state.instructions, null, 2)}
                   </pre>
                   <pre style={{ textAlign: "left" }}>
                     <strong>Errors</strong>

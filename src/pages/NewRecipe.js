@@ -1,5 +1,6 @@
 import React from "react";
 import BaseRecipe from "../components/RecipeForms/BaseRecipe";
+import FinalSubmitRecipeForm from "../components/RecipeForms/FinalSubmit";
 import RecipeIngredients from "../components/RecipeForms/RecipeIngredients";
 import RecipeInstructions from "../components/RecipeForms/RecipeInstructions";
 
@@ -20,6 +21,7 @@ const CreateEdit = () => {
       <BaseRecipe/>
       <RecipeIngredients/>
       <RecipeInstructions/>
+      <FinalSubmitRecipeForm/>
     </div>
   );
 };

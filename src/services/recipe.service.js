@@ -8,33 +8,45 @@ class RecipeService {
     
     All GET requests are public.
     POST, PUT, and DELETE require proper JWT Validation through authHeader service
-
   */
-  // NO BACKEND CONTENT YET
-  //   getAllIngredients() {
-  //     return axios.get(API_URL + "ingredients");
-  //   }
-  //   getIngredientsByString(ingredientSearch) {
-  //     return axios.get(API_URL + "ingredients/" + ingredientSearch);
-  //   }
-  //   getIngredientsById(ingredientId) {
-  //     return axios.get(API_URL + "ingredients/id/" + ingredientId);
-  //   }
-  //   postIngredients(ingredient) {
-  //     return axios.post(API_URL + "ingredients", ingredient, {
-  //       headers: authHeader(),
-  //     });
-  //   }
-  //   putIngredientById(ingredientId, ingredient) {
-  //     return axios.put(API_URL + "ingredients/" + ingredientId, ingredient, {
-  //       headers: authHeader(),
-  //     });
-  //   }
-  //   deleteIngredientById(ingredientId) {
-  //     return axios.delete(API_URL + "ingredients/" + ingredientId, {
-  //       headers: authHeader(),
-  //     });
-  //   }
+  getAllRecipes() {
+    return axios.get(API_URL + "recipe", {
+      headers: authHeader(),
+    });
+  }
+  getAllRecommendedRecipes() {
+    return axios.get(API_URL + "recipe/recommended");
+  }
+  getRecipeById(id){
+    return axios.get(API_URL + "recipe/id/" + id, {
+      headers: authHeader(),
+    });
+  }
+  getRecipeBySearch(searchString){
+    return axios.get(API_URL + "recipe/" + searchString, {
+      headers: authHeader(),
+    });
+  }
+  getRecipeByCategoryId(id){
+    return axios.get(API_URL + "recipe/category/" + id, {
+      headers: authHeader(),
+    });
+  }
+  postRecipe(recipeObj) {
+    return axios.post(API_URL + "recipe", recipeObj, {
+      headers: authHeader(),
+    });
+  }
+  putRecipeById(recipeId, recipe) {
+    return axios.put(API_URL + "recipe/" + recipeId, recipe, {
+      headers: authHeader(),
+    });
+  }
+  deleteRecipeById(recipeId) {
+    return axios.delete(API_URL + "recipe/" + recipeId, {
+      headers: authHeader(),
+    }) 
+  }
 }
 
 export default new RecipeService();
