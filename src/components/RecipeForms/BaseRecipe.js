@@ -23,6 +23,7 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required("Required"),
   isPublic: Yup.boolean(),
   category: Yup.string().required("Select a recipe category"),
+  categoryId: Yup.number()
 });
 
 const RecipeForm = props => {
@@ -37,6 +38,7 @@ const RecipeForm = props => {
     description,
     isPublic,
     category,
+    categoryId
   } = props;
 
   const recipeSubmit = (values, { setSubmitting }) => {
@@ -59,7 +61,8 @@ const RecipeForm = props => {
         let categoryArr = res.data.map((categoryObj) => {
           return {
             value: categoryObj.category,
-            label: capitalize(categoryObj.category)
+            label: capitalize(categoryObj.category),
+            id: categoryObj.id
           }
         })
         setRecipeCategory(categoryArr)
@@ -174,7 +177,7 @@ const RecipeForm = props => {
                     }
                     fullWidth>
                     {recipeCategory.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.id}>
                         {option.label}
                       </MenuItem>
                     ))}

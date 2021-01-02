@@ -19,7 +19,6 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-
 const RecipeInstructions = ({ editForm }) => {
   
   const [state, dispatch] = useStoreContext();
