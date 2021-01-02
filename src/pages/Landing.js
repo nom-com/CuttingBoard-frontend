@@ -1,6 +1,12 @@
 import React from "react";
 import { useAuthContext } from "../utils/AuthContext";
 import RecipeGlanceFrame from "../components/RecipeGlanceFrame";
+import VideoPlayer from "../components/VideoPlayer";
+
+
+import createYouTube from 'react-youtube-component';
+
+const YouTube = createYouTube();
 
 const Landing = () => {
   const [authState, authDispatch] = useAuthContext();
@@ -26,6 +32,7 @@ const Landing = () => {
         </button>
       )}
       <RecipeGlanceFrame/>
+      <VideoPlayer videoId="jc1DtH-OC94"/>
     </div>
   );
 };
