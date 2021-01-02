@@ -10,7 +10,10 @@ class VideoPlayer extends Component {
           autoplay: 0,
           color: 0,
           controls: 1,
-          videoId: props.videoId
+          videoId: props.videoId,
+          height: props.height,
+          width: props.width
+
         };
       }
      
@@ -41,9 +44,9 @@ class VideoPlayer extends Component {
         return (
           <div id="video-frame">
             <YouTube
-              height="390"
-              width="640"
-              videoId={this.videoId}
+              height={this.playerVars.height}
+              width={this.playerVars.width}
+              videoId={this.playerVars.videoId}
               playerVars={this.playerVars}
               onStateChange={this.onStateChange}
               onReady={this.onReady}

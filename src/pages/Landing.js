@@ -32,7 +32,8 @@ const Landing = () => {
         </button>
       )}
       <RecipeGlanceFrame/>
-      <VideoPlayer videoId="jc1DtH-OC94"/>
+      <br/><br/>
+      <VideoPlayer videoId="jc1DtH-OC94" height="390" width="640"/>
     </div>
   );
 };
