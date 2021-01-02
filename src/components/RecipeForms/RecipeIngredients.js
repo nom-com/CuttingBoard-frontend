@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Divider, Button, TextField } from "@material-ui/core";
 import { FieldArray, Form, Formik, getIn } from "formik";
 import * as Yup from "yup";
@@ -10,62 +10,83 @@ import ClearIcon from "@material-ui/icons/Clear";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useStoreContext } from "../../utils/GlobalState";
-import {SET_INGREDIENTS} from "../../utils/actions";
+import { SET_INGREDIENTS } from "../../utils/actions";
 import IngredientService from "../../services/ingredient.service";
 
-const ingredientSubmit = values => {
-  console.log("onSubmit", JSON.stringify(values, null, 2));
-};
-
 const validationSchema = Yup.object().shape({
-  ingredients: Yup.array()
-    .of(
-      Yup.object().shape({
+  ingredients: Yup.array().of(
+    Yup.object()
+      .shape({
         ingredientName: Yup.string().required("Ingredient is required"),
         ingredientAmount: Yup.string().required("Amount is required"),
-      }).test("unique", "Duplicate ingredient in list", function validateUnique(currentIngredient){
-        const otherIngredients = this.parent.filter(ingredient => ingredient !== currentIngredient);
-        const isDuplicate = otherIngredients.some(
-          ingredient => ingredient.ingredientName === currentIngredient.ingredientName
-        );
-        return isDuplicate
-          ? this.createError({ path: `${this.path}.ingredientName` })
-          : true;
+        ingredientId: Yup.number()
       })
-    )
-
+      .test(
+        "unique",
+        "Duplicate ingredient in list",
+        function validateUnique(currentIngredient) {
+          const otherIngredients = this.parent.filter(
+            ingredient => ingredient !== currentIngredient
+          );
+          const isDuplicate = otherIngredients.some(
+            ingredient =>
+              ingredient.ingredientName === currentIngredient.ingredientName
+          );
+          return isDuplicate
+            ? this.createError({ path: `${this.path}.ingredientName` })
+            : true;
+        }
+      )
+  ),
 });
 
-const debug = false;
+const debug = true;
 
-const fake_ingredientAPI = [
-  { id: 0, ingredientName: "" },
-  {
-    id: 1,
-    ingredientName: "Garlic",
-  },
-  {
-    id: 2,
-    ingredientName: "Parmesan Cheese",
-  },
-  {
-    id: 3,
-    ingredientName: "Salt",
-  },
-];
 const RecipeIngredients = ({ editForm }) => {
 
   const [state, dispatch] = useStoreContext();
+  const [ingredientsAPI, setIngredientsAPI] = useState([
+    { id: 0, ingredientName: "" },
+  ]);
 
-  const getIngredients =() => {
-    IngredientService.getAllIngredients().then(res=> {
-      console.log(res);
-    }).then(err => console.log(err))
-  }
-  useEffect(()=> {
+  const ingredientSubmit = values => {
 
+    const parsedIngredients = values.ingredients.map(ingredient => {
+      return {
+        amount: {
+          amount: ingredient.ingredientAmount,
+          ingredient: {
+            id: ingredient.ingredientId
+          }
+        }
+      }
+    })
+    console.log(parsedIngredients)
+    dispatch({
+      type: SET_INGREDIENTS,
+      ingredients: parsedIngredients
+    })
+  };
+
+  const getIngredients = () => {
+    IngredientService.getAllIngredients()
+      .then(res => {
+        if (res.data.length > 0) {
+          const parsedIngredients = res.data.map(ingredientObj => {
+            return {
+              id: ingredientObj.id,
+              ingredientName: ingredientObj.ingredient,
+            };
+          });
+          setIngredientsAPI([...ingredientsAPI, ...parsedIngredients]);
+        }
+      })
+      .then(err => console.log(err));
+  };
+
+  useEffect(() => {
     getIngredients();
-  }, [])
+  }, []);
 
   return (
     <div className='page-body-content'>
@@ -74,9 +95,9 @@ const RecipeIngredients = ({ editForm }) => {
           initialValues={{
             ingredients: [
               {
-                id: Math.random(),
                 ingredientName: "",
                 ingredientAmount: "",
+                ingredientId: 0
               },
             ],
           }}
@@ -125,6 +146,8 @@ const RecipeIngredients = ({ editForm }) => {
                       const touchedAmount = getIn(touched, ingredientAmount);
                       const errorAmount = getIn(errors, ingredientAmount);
 
+                      const ingredientId = `ingredients[${index}].ingredientId`;
+
                       return (
                         <Grid
                           container
@@ -139,7 +162,7 @@ const RecipeIngredients = ({ editForm }) => {
                             <Autocomplete
                               name={ingredientName}
                               value={p.ingredientName}
-                              options={fake_ingredientAPI}
+                              options={ingredientsAPI}
                               getOptionSelected={(option, value) =>
                                 option.ingredientName === value
                               }
@@ -160,6 +183,7 @@ const RecipeIngredients = ({ editForm }) => {
                                     ? newValue.ingredientName
                                     : ""
                                 );
+                                setFieldValue(ingredientId, newValue !== null ? newValue.id : 0)
                               }}
                               renderInput={params => (
                                 <TextField
@@ -169,7 +193,7 @@ const RecipeIngredients = ({ editForm }) => {
                                   size='small'
                                   error={Boolean(touchedName && errorName)}
                                   helperText={
-                                     touchedName && errorName ? errorName : " "
+                                    touchedName && errorName ? errorName : " "
                                   }
                                   fullWidth
                                   variant='outlined'
@@ -198,7 +222,7 @@ const RecipeIngredients = ({ editForm }) => {
                           <Grid item xs={1}>
                             <IconButton
                               aria-label='delete'
-                              disabled={index===0}
+                              disabled={index === 0}
                               onClick={() => remove(index)}>
                               <ClearIcon />
                             </IconButton>
@@ -245,9 +269,9 @@ const RecipeIngredients = ({ editForm }) => {
               {debug && (
                 <>
                   <pre style={{ textAlign: "left" }}>
-                    <strong>Values</strong>
+                    <strong>State Ingredients</strong>
                     <br />
-                    {JSON.stringify(values, null, 2)}
+                    {JSON.stringify(state.ingredients, null, 2)}
                   </pre>
                   <pre style={{ textAlign: "left" }}>
                     <strong>Errors</strong>
