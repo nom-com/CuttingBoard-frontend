@@ -1,13 +1,11 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import ListItemLink from "../components/ListItemLink";
-// import AuthMenu from "../components/AuthMenu";
-// import { authContext } from "../contexts/AuthContext";
-import { useAuthContext } from "../utils/AuthContext";
 import Logout from "../components/Logout";
+import { useStoreContext } from "../utils/GlobalState";
 
 const Nav = () => {
-  const [authState, authDispatch] = useAuthContext();
+  const [state, dispatch] = useStoreContext();
   return (
     <Grid
       container
@@ -24,9 +22,9 @@ const Nav = () => {
       <Grid item>
         <ListItemLink to='/search' primary='Search' />
       </Grid>
-      {authState.username ? (
+      {state.user ? (
         <React.Fragment>
-          {authState.admin ? (
+          {state.user.admin ? (
             <Grid item>
             <ListItemLink to='/admin' primary='Admin' />
           </Grid>
