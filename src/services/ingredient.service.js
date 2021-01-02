@@ -6,19 +6,24 @@ class IngredientService {
   /*
     Ingredient Service:
     
-    All GET requests are public.
-    POST, PUT, and DELETE require proper JWT Validation through authHeader service
+    GET, POST, PUT, and DELETE require proper JWT Validation through authHeader service
 
   */
 
   getAllIngredients() {
-    return axios.get(API_URL + "ingredients");
+    return axios.get(API_URL + "ingredients", {
+      headers: authHeader(),
+    });
   }
   getIngredientsByString(ingredientSearch) {
-    return axios.get(API_URL + "ingredients/" + ingredientSearch);
+    return axios.get(API_URL + "ingredients/" + ingredientSearch, {
+      headers: authHeader(),
+    });
   }
   getIngredientsById(ingredientId) {
-    return axios.get(API_URL + "ingredients/id/" + ingredientId);
+    return axios.get(API_URL + "ingredients/id/" + ingredientId, {
+      headers: authHeader(),
+    });
   }
   postIngredients(ingredient) {
     return axios.post(API_URL + "ingredients", ingredient, {

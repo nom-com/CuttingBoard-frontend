@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Divider, Button, TextField } from "@material-ui/core";
 import { FieldArray, Form, Formik, getIn } from "formik";
 import * as Yup from "yup";
@@ -9,6 +9,9 @@ import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { useStoreContext } from "../../utils/GlobalState";
+import {SET_INGREDIENTS} from "../../utils/actions";
+import IngredientService from "../../services/ingredient.service";
 
 const ingredientSubmit = values => {
   console.log("onSubmit", JSON.stringify(values, null, 2));
@@ -51,6 +54,19 @@ const fake_ingredientAPI = [
   },
 ];
 const RecipeIngredients = ({ editForm }) => {
+
+  const [state, dispatch] = useStoreContext();
+
+  const getIngredients =() => {
+    IngredientService.getAllIngredients().then(res=> {
+      console.log(res);
+    }).then(err => console.log(err))
+  }
+  useEffect(()=> {
+
+    getIngredients();
+  }, [])
+
   return (
     <div className='page-body-content'>
       <Paper>
