@@ -16,6 +16,7 @@ import { useStoreContext } from "../utils/GlobalState";
 import { SET_FAVORITES, LOADING } from "../utils/actions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
+import RecipeService from "../services/recipe.service";
 
 const FavoritesTable = () => {
   const [state, dispatch] = useStoreContext();
@@ -23,45 +24,89 @@ const FavoritesTable = () => {
   const favoriteRecipes = [
     {
       id: 0,
-      img: "https://via.placeholder.com/100",
-      title: "test",
-      category: "soup",
-      public: true,
+      recipe: {
+        id: 2,
+        imageLocation: "https://via.placeholder.com/100",
+        title: "f",
+        description: "f",
+        publicRecipe: false,
+        ingredients: [],
+        instructions: [],
+        category: {
+          id: 2,
+          category: "Another Category",
+        },
+      },
     },
     {
       id: 2,
-      img: "https://via.placeholder.com/100",
-      title: "test",
-      category: "pasta",
-      public: false,
+      recipe: {
+        id: 2,
+        imageLocation: "https://via.placeholder.com/100",
+        title: "f",
+        description: "f",
+        publicRecipe: false,
+        ingredients: [],
+        instructions: [],
+        category: {
+          id: 2,
+          category: "Another Category",
+        },
+      },
     },
     {
       id: 3,
-      img: "https://via.placeholder.com/100",
-      title: "test",
-      category: "dessert",
-      public: true,
+      recipe: {
+        id: 2,
+        imageLocation: "https://via.placeholder.com/100",
+        title: "f",
+        description: "f",
+        publicRecipe: false,
+        ingredients: [],
+        instructions: [],
+        category: {
+          id: 2,
+          category: "Another Category",
+        },
+      },
     },
   ];
 
   //
   const setFavorites = () => {
     dispatch({ type: LOADING, loading: true });
-    setTimeout(function () {
-      dispatch({
-        type: SET_FAVORITES,
-        favorites: favoriteRecipes,
+    RecipeService.getFavoriteRecipes()
+      .then((res) => {
+        console.log(res);
+        dispatch({
+          type: SET_FAVORITES,
+          favorites: favoriteRecipes,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: LOADING, loading: false });
       });
-    }, 1500);
   };
 
   // WILL BE AN API CALL
-  const removeFavorite = id => {
-    const shorterFavs = state.favorites.filter(fav => fav.id !== id);
-    dispatch({
-      type: SET_FAVORITES,
-      favorites: shorterFavs,
-    });
+  const removeFavorite = (id) => {
+    dispatch({ type: LOADING, loading: true });
+    RecipeService.deleteFavoriteRecipe(id)
+      .then((res) => {
+        console.log(res);
+        setFavorites();
+      })
+      .catch((err) => {
+        console.log(res);
+        console.log("DELETE REQUEST, something went wrong");
+        dispatch({ type: LOADING, loading: false });
+      });
+    // const shorterFavs = state.favorites.filter((fav) => fav.id !== id);
+    // dispatch({
+    //   type: SET_FAVORITES,
+    //   favorites: shorterFavs,
+    // });
   };
 
   useEffect(() => {
@@ -71,18 +116,18 @@ const FavoritesTable = () => {
   return (
     <React.Fragment>
       {state.loading ? (
-        <Grid container item direction='row' justify='center'>
+        <Grid container item direction="row" justify="center">
           <Grid item>
-            <CircularProgress color='secondary' />
+            <CircularProgress color="secondary" />
           </Grid>
         </Grid>
       ) : (
-        <Grid container item direction='row' justify='center'>
+        <Grid container item direction="row" justify="center">
           {state.favorites.length > 0 ? (
             <Grid item xs={12}>
               <Fade in={!state.loading}>
                 <TableContainer component={Paper}>
-                  <Table aria-label='simple table'>
+                  <Table aria-label="simple table">
                     <TableHead>
                       <TableRow>
                         <TableCell>Image</TableCell>
@@ -93,24 +138,32 @@ const FavoritesTable = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {state.favorites.map(recipe => (
-                        <TableRow key={recipe.id}>
-                          <TableCell component='th' scope='row'>
-                            <Tooltip title='View Recipe'>
-                              <Link to={`/recipe/${recipe.id}`}>
-                                <img src={recipe.img} alt='placeholder' />
+                      {state.favorites.map((favorite) => (
+                        <TableRow key={favorite.id}>
+                          <TableCell component="th" scope="row">
+                            <Tooltip title="View favorite">
+                              <Link to={`/recipe/${favorite.recipe.id}`}>
+                                <img
+                                  src={favorite.recipe.imageLocation}
+                                  alt="placeholder"
+                                />
                               </Link>
                             </Tooltip>
                           </TableCell>
-                          <TableCell>{recipe.title}</TableCell>
-                          <TableCell>{recipe.category}</TableCell>
+                          <TableCell>{favorite.recipe.title}</TableCell>
                           <TableCell>
-                            {recipe.public ? "public" : "private"}
+                            {favorite.recipe.category.category}
                           </TableCell>
                           <TableCell>
-                            <Tooltip title='Remove from Favorites'>
+                            {favorite.recipe.publicRecipe
+                              ? "public"
+                              : "private"}
+                          </TableCell>
+                          <TableCell>
+                            <Tooltip title="Remove from Favorites">
                               <IconButton
-                                onClick={() => removeFavorite(recipe.id)}>
+                                onClick={() => removeFavorite(favorite.id)}
+                              >
                                 <TrashIcon />
                               </IconButton>
                             </Tooltip>
@@ -125,7 +178,7 @@ const FavoritesTable = () => {
           ) : (
             <React.Fragment>
               <Grid item>
-                <Typography variant='subtitle1'>
+                <Typography variant="subtitle1">
                   no favorite recipes found
                 </Typography>
                 {/* TO BE DELETED */}
