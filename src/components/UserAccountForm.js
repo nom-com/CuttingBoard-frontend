@@ -13,23 +13,6 @@ import AuthService from "../services/auth.service";
 import { useHistory } from "react-router-dom";
 import { useStoreContext } from "../utils/GlobalState";
 
-const checkUniqueUsername = (username, setFieldError, setStatus) => {
-  // call API to check username return true or false
-  // helper func
-  if (username.length < 8) {
-    setFieldError("username", "Username must contain at least 8 characters");
-    return false;
-  }
-
-  if (username === "dansirdan") {
-    setFieldError("username", "This username already exists.");
-  } else {
-    setStatus({ username: "Looks good!" });
-    return true;
-  }
-  return false;
-};
-
 const validationSchema = Yup.object().shape({
   username: Yup.string()
     .min(8, "Username must contain at least 8 characters")
@@ -53,6 +36,28 @@ const SignUpForm = props => {
 
   const { username, email, firstName, lastName, password, editForm } = props;
 
+  const checkUniqueUsername = (usernameTest, setFieldError, setStatus) => {
+    if (usernameTest.length < 8) {
+      setFieldError("username", "Username must contain at least 8 characters");
+      return false;
+    }
+    AuthService.register(usernameTest)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        if (err.response) {
+          if (err.response.data === "User already exists.") {
+            setFieldError("username", "That username already exists.");
+            return false;
+          } else {
+            setStatus({ username: "Looks good!" });
+            return true;
+          }
+        }
+      });
+  };
+
   const signUpSubmit = (
     values,
     { setSubmitting, resetForm, setFieldError, setStatus }
@@ -65,7 +70,7 @@ const SignUpForm = props => {
       values.firstName,
       values.lastName
     )
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           AuthService.setCurrentUser({
             ...res.data,
@@ -76,82 +81,79 @@ const SignUpForm = props => {
             user: res.data,
           });
           history.replace("/");
-        } 
-        // else if (res.status === 400) {
-        //   setFieldError("username", "This username or email already exists.");
-        //   console.log("Possible duplicate email or username");
-        //   setSubmitting(false);
-        // }
+        }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
-        setFieldError("username", "This username or email already exists.");
-        console.log("Possible duplicate email or username");
-        setSubmitting(false);
-
+        if (err.response) {
+          if (err.response.data === "User already exists.") {
+            setFieldError("username", "That username already exists.");
+          }
+          if (err.response.data === "Email already exists.") {
+            setFieldError("email", "That email already exists.");
+          }
+          setSubmitting(false);
+        }
       });
   };
 
   return (
     <div className='page-body-content'>
-      <Paper>
-        <Formik
-          initialValues={{
-            username: username || "",
-            email: email || "",
-            firstName: firstName || "",
-            lastName: lastName || "",
-            password: password || "",
-            confirmPassword: "",
-          }}
-          initialTouched={{
-            username: false,
-            email: false,
-            firstName: false,
-            lastName: false,
-            password: false,
-            confirmPassword: false,
-          }}
-          initialErrors={{
-            username: false,
-            email: false,
-            firstName: false,
-            lastName: false,
-            password: false,
-            confirmPassword: false,
-          }}
-          initialStatus={{
-            username: false,
-            email: false,
-            firstName: false,
-            lastName: false,
-            password: false,
-            confirmPassword: false,
-          }}
-          validationSchema={validationSchema}
-          onSubmit={signUpSubmit}>
-          {({
-            values,
-            touched,
-            status,
-            errors,
-            handleChange,
-            handleBlur,
-            setFieldError,
-            setStatus,
-            isSubmitting,
-            isValid,
-            setFieldValue,
-          }) => (
-            <Form
-              noValidate
-              autoComplete='off'
-              style={{
-                maxWidth: 600,
-                margin: "auto",
-                marginTop: 30,
-                padding: 20,
-              }}>
+      <Formik
+        initialValues={{
+          username: username || "",
+          email: email || "",
+          firstName: firstName || "",
+          lastName: lastName || "",
+          password: password || "",
+          confirmPassword: "",
+        }}
+        initialTouched={{
+          username: false,
+          email: false,
+          firstName: false,
+          lastName: false,
+          password: false,
+          confirmPassword: false,
+        }}
+        initialErrors={{
+          username: false,
+          email: false,
+          firstName: false,
+          lastName: false,
+          password: false,
+          confirmPassword: false,
+        }}
+        initialStatus={{
+          username: false,
+          email: false,
+          firstName: false,
+          lastName: false,
+          password: false,
+          confirmPassword: false,
+        }}
+        validationSchema={validationSchema}
+        onSubmit={signUpSubmit}>
+        {({
+          values,
+          touched,
+          status,
+          errors,
+          handleChange,
+          handleBlur,
+          setFieldError,
+          setStatus,
+          isSubmitting,
+        }) => (
+          <Form
+            noValidate
+            autoComplete='off'>
+            <Paper style={{
+              maxWidth: 600,
+              margin: "auto",
+              marginTop: 30,
+              padding: 20,
+            }}>
               <Grid
                 container
                 direction='row'
@@ -159,7 +161,9 @@ const SignUpForm = props => {
                 alignItems='center'>
                 <Grid item>
                   <Typography variant='h2'>Create an Account</Typography>
-                  <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider style={{ marginTop: 10, marginBottom: 20 }} />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -171,10 +175,10 @@ const SignUpForm = props => {
                     value={values.username}
                     placeholder='foodie77'
                     helperText={
-                      touched.username && errors.username
-                        ? errors.username
-                        : status.username
+                      touched.username && status.username
                         ? status.username
+                        : errors.username
+                        ? errors.username
                         : " "
                     }
                     fullWidth
@@ -330,10 +334,10 @@ const SignUpForm = props => {
                   </Button>
                 </Grid>
               </Grid>
-            </Form>
-          )}
-        </Formik>
-      </Paper>
+            </Paper>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

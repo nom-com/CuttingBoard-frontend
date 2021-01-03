@@ -7,9 +7,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useStoreContext } from "../../utils/GlobalState";
 import { SET_INSTRUCTIONS } from "../../utils/actions";
+import DebugData from "../DebugData";
 
 const validationSchema = Yup.object().shape({
   instructions: Yup.array().of(
@@ -19,45 +20,43 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-const RecipeInstructions = ({ editForm }) => {
-  
+const RecipeInstructions = ({ editForm, navigateOnSubmit }) => {
   const [state, dispatch] = useStoreContext();
-  const debug = true;
+  const debug = false;
 
   const instructionSubmit = values => {
     const parsedInstructions = values.instructions.map((instruction, index) => {
       return {
         step: {
-          step: instruction.instruction
+          step: instruction.instruction,
         },
-        stepOrder: index +1
-      }
-    })
+        stepOrder: index + 1,
+      };
+    });
 
     dispatch({
       type: SET_INSTRUCTIONS,
-      instructions: parsedInstructions
-    })
-  };
+      instructions: parsedInstructions,
+    });
 
+    navigateOnSubmit("right")
+  };
 
   return (
     <div className='page-body-content'>
-      <Paper>
-        <Formik
-          initialValues={{
-            instructions: [
-              {
-                instruction: "",
-              },
-            ],
-          }}
-          validationSchema={validationSchema}
-          onSubmit={instructionSubmit}>
-          {({ values, touched, errors, handleChange, handleBlur, isValid }) => (
-            <Form
-              noValidate
-              autoComplete='off'
+      <Formik
+        initialValues={{
+          instructions: [
+            {
+              instruction: "",
+            },
+          ],
+        }}
+        validationSchema={validationSchema}
+        onSubmit={instructionSubmit}>
+        {({ values, touched, errors, handleChange, handleBlur, isValid }) => (
+          <Form noValidate autoComplete='off'>
+            <Paper
               style={{
                 maxWidth: 600,
                 margin: "auto",
@@ -73,7 +72,7 @@ const RecipeInstructions = ({ editForm }) => {
                     alignItems='center'
                     margin={4}>
                     <Grid item>
-                      <Typography variant='h2'>
+                      <Typography variant='h4'>
                         {editForm ? "Edit " : "Add "}Instructions
                       </Typography>
                     </Grid>
@@ -163,29 +162,18 @@ const RecipeInstructions = ({ editForm }) => {
                 <Button
                   type='submit'
                   variant='outlined'
-                //   disabled={!isValid || values.instructions.length === 0}
+                  //   disabled={!isValid || values.instructions.length === 0}
                   endIcon={<NavigateNextIcon />}>
                   next
                 </Button>
               </Grid>
               {debug && (
-                <>
-                  <pre style={{ textAlign: "left" }}>
-                    <strong>Values</strong>
-                    <br />
-                    {JSON.stringify(state.instructions, null, 2)}
-                  </pre>
-                  <pre style={{ textAlign: "left" }}>
-                    <strong>Errors</strong>
-                    <br />
-                    {JSON.stringify(errors, null, 2)}
-                  </pre>
-                </>
+                <DebugData values={state.instructions} errors={errors} />
               )}
-            </Form>
-          )}
-        </Formik>
-      </Paper>
+            </Paper>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

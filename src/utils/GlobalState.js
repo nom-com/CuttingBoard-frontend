@@ -15,6 +15,7 @@ import {
   UNSET_INSTRUCTIONS,
   SET_FAVORITES,
   SET_SHOPPING_LIST,
+  SET_DB_INGREDIENTS
 } from "./actions";
 
 const StoreContext = createContext();
@@ -100,6 +101,12 @@ const reducer = (state, action) => {
         shoppingList: action.shoppingList,
         loading: false
       };
+    case SET_DB_INGREDIENTS:
+      return {
+        ...state,
+        dbIngredients: action.dbIngredients,
+        loading: false
+      }
     default:
       return state;
   }
@@ -116,6 +123,7 @@ const StoreProvider = ({ value = [], ...props }) => {
     instructions: [],
     favorites: [],
     shoppingList: [],
+    dbIngredients: []
   });
 
   return <Provider value={[state, dispatch]} {...props} />;

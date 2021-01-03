@@ -25,7 +25,7 @@ class IngredientService {
       headers: authHeader(),
     });
   }
-  postIngredients(ingredient) {
+  postIngredient(ingredient) {
     return axios.post(API_URL + "ingredients", ingredient, {
       headers: authHeader(),
     });
