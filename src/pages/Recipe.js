@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import RecipeService from "../services/recipe.service";
-import {SET_CURRENT_RECIPE, SET_FAVORITES} from "../utils/actions";
+import { SET_CURRENT_RECIPE, SET_FAVORITES } from "../utils/actions";
 import { useStoreContext } from "../utils/GlobalState";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
 import StarIcon from "@material-ui/icons/Star";
 
@@ -105,21 +104,23 @@ const Recipe = (props) => {
   //Contains Bool for whether Recipe is one of your favorites or not
   const [isFavorite, setIsFavorite] = useState(false);
 
+  //Loads the list of user's favorites
   const setFavorites = () => {
     RecipeService.getFavoriteRecipes()
-    .then(res => {
-      console.log(res.data);
-      res.status === 200 && dispatch({
-        type: SET_FAVORITES,
-        favorites: res.data,
+      .then(res => {
+        console.log(res.data);
+        res.status === 200 && dispatch({
+          type: SET_FAVORITES,
+          favorites: res.data,
+        })
+        console.log(res.data);
       })
-      console.log(res.data);
-    })
-    .catch(err => {
+      .catch(err => {
         console.log(err);
-    });
+      });
   };
 
+  //Loads the RecipeData for Display
   const handleLoadRecipe = (recipeId) => {
     RecipeService.getRecipeById(recipeId)
       .then(res => {
@@ -131,21 +132,36 @@ const Recipe = (props) => {
         //console.log(RecipeService.getCurrentRecipe());
       })
       .catch(err => {
-          console.log(err);
-        });
+        console.log(err);
+      });
   };
 
+  //Adds Favorite to your Favorites
   const handleAddFavorite = (recipeId) => {
     RecipeService.postFavoriteRecipe(recipeId)
       .then(res => {
         console.log(res.data);
-        res.status === 200 && setIsFavorite(true);
+        //Sets local state flag to true for Button Display
+        res.status === 201 && setIsFavorite(true);
         console.log(isFavorite);
-        //console.log(RecipeService.getCurrentRecipe());
       })
       .catch(err => {
-          console.log(err);
-        });
+        console.log("Recipe is already a favorite or server cannot be reached.");
+      });
+  };
+
+  //Removes Favorite from your Favorites
+  const handleRemoveFavorite = (recipeId) => {
+    RecipeService.deleteFavoriteRecipe(recipeId)
+      .then(res => {
+        console.log(res.data);
+        //Sets local state flag to true for Button Display
+        res.status === 204 && setIsFavorite(false);
+        console.log(isFavorite);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
 
@@ -160,7 +176,9 @@ const Recipe = (props) => {
     //Set the State's list of Favorites so we can check if this recipe is a favorite already
     setFavorites();
 
-  }, [] /*Empty Array Ensures Side Effects only occur once, might needs props for dependency*/
+    //Check to see if current recipe is in our favorites
+
+  }, [] /*Empty Array Ensures Side Effects only occur once*/
   );
 
   //When finished, pull apart created JSON obj and display each component
@@ -170,39 +188,39 @@ const Recipe = (props) => {
         {console.log(state.currentRecipe)}
         {state.currentRecipe ?
           <React.Fragment>
-          <h1>{state.currentRecipe.title}</h1>
-          <h3>Recipe #{state.currentRecipe.id}</h3>
-          <strong>Category:</strong> {state.currentRecipe.category.category}
-          <br/><img style={{width: 30 + '%'}} src={"http://images.generictech.org/" + state.currentRecipe.imageLocation}/>
-          <br/>
-          {isFavorite ? (
-            <Button onClick={() => {setIsFavorite(false)}} endIcon={<StarIcon />}> Unfavorite</Button>
-          ) : (
-            <Button onClick={() => {handleAddFavorite(props.match.params.id); console.log(isFavorite); setIsFavorite(true)}} endIcon={<StarBorderIcon />}> Favorite</Button>
-          )}
-          <h1>Description:</h1>
-          {state.currentRecipe.description}
-          <div id="ingredients-list">
-          <h1>Ingredients</h1>
-            <ul>
-            {state.currentRecipe.ingredients.map(ingredient => (
-              <li key={ingredient.amount.ingredient.ingredient}>
-                {ingredient.amount.amount} {ingredient.amount.ingredient.ingredient}
-              </li>
-            ))}
-            </ul>
-          </div>
-          <div id="instructions-list">
-          <h1>Instructions</h1>
-            <ol>
-            {state.currentRecipe.instructions.map(instruction => (
-              <li key={instruction.stepOrder}>
-                {instruction.step.step}
-              </li>
-            ))}
-            </ol>
-            <br/><br/>
-          </div>
+            <h1>{state.currentRecipe.title}</h1>
+            <h3>Recipe #{state.currentRecipe.id}</h3>
+            <strong>Category:</strong> {state.currentRecipe.category.category}
+            <br /><img style={{ width: 30 + '%' }} src={"http://images.generictech.org/" + state.currentRecipe.imageLocation} />
+            <br />
+            {isFavorite ? (
+              <Button onClick={() =>    { handleRemoveFavorite(props.match.params.id); console.log("isFavorite: " + isFavorite); }} startIcon={<StarIcon />}> Unfavorite</Button>
+            ) : (
+                <Button onClick={() =>  { handleAddFavorite(props.match.params.id); console.log("isFavorite: " + isFavorite); }} startIcon={<StarBorderIcon />}> Favorite</Button>
+              )}
+            <h1>Description:</h1>
+            {state.currentRecipe.description}
+            <div id="ingredients-list">
+              <h1>Ingredients</h1>
+              <ul>
+                {state.currentRecipe.ingredients.map(ingredient => (
+                  <li key={ingredient.amount.ingredient.ingredient}>
+                    {ingredient.amount.amount} {ingredient.amount.ingredient.ingredient}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div id="instructions-list">
+              <h1>Instructions</h1>
+              <ol>
+                {state.currentRecipe.instructions.map(instruction => (
+                  <li key={instruction.stepOrder}>
+                    {instruction.step.step}
+                  </li>
+                ))}
+              </ol>
+              <br /><br />
+            </div>
           </React.Fragment>
           : <div>
             No Recipes Found.

@@ -47,6 +47,11 @@ class RecipeService {
       headers: authHeader(),
     });
   }
+  deleteFavoriteRecipe(recipeId) {
+    return axios.delete(API_URL + "favorites/" +  recipeId, {
+      headers: authHeader(),
+    });
+  }
   putRecipeById(recipeId, recipe) {
     return axios.put(API_URL + "recipe/" + recipeId, recipe, {
       headers: authHeader(),

@@ -276,16 +276,6 @@ const RecipeGlanceFrame = () => {
     
   const [state, dispatch] = useStoreContext();
 
-//   const setRecommended = () => {
-//     dispatch({ type: LOADING, loading: true });
-//     setTimeout(function () {
-//       dispatch({
-//         type: SET_RECOMMENDED_RECIPES,
-//         recipes: dummyRecipeArray,
-//       });
-//     }, 1490);
-//   };
-
   const setRecommended = () => {
     RecipeService.getAllRecommendedRecipes()
       .then(res => {
