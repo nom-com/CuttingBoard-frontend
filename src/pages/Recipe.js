@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import RecipeService from "../services/recipe.service";
-import { SET_CURRENT_RECIPE, SET_FAVORITES } from "../utils/actions";
+import { SET_CURRENT_RECIPE, SET_FAVORITES, LOADING } from "../utils/actions";
 import { useStoreContext } from "../utils/GlobalState";
 import Button from "@material-ui/core/Button";
 import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
@@ -103,20 +103,41 @@ const Recipe = (props) => {
 
   //Contains Bool for whether Recipe is one of your favorites or not
   const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteId, setFavoriteId] = useState(0);
+
+  const getFavoriteId = () => {
+    if (state.favorites.length > 0) {
+      for (let i=0;i<state.favorites.length;i++)
+      {
+        if (state.favorites[i].recipe.id === state.currentRecipe.id){
+          console.log("setIsFavorite Before: " + isFavorite);
+          setFavoriteId(state.favorites[i].id);
+          setIsFavorite(true);
+          console.log("setIsFavorite After: " + isFavorite);
+        }
+      }
+    }
+    else {
+      setIsFavorite(false);
+    }
+  }
+  
 
   //Loads the list of user's favorites
   const setFavorites = () => {
+    dispatch({ type: LOADING, loading: true });
     RecipeService.getFavoriteRecipes()
-      .then(res => {
-        console.log(res.data);
-        res.status === 200 && dispatch({
+      .then((res) => {
+        console.log(res);
+        dispatch({
           type: SET_FAVORITES,
           favorites: res.data,
-        })
-        console.log(res.data);
+        });
+        getFavoriteId();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
+        dispatch({ type: LOADING, loading: false });
       });
   };
 
@@ -129,6 +150,8 @@ const Recipe = (props) => {
           type: SET_CURRENT_RECIPE,
           recipe: res.data
         });
+        //Set the State's list of Favorites so we can check if this recipe is a favorite already
+        setFavorites();
         //console.log(RecipeService.getCurrentRecipe());
       })
       .catch(err => {
@@ -138,29 +161,35 @@ const Recipe = (props) => {
 
   //Adds Favorite to your Favorites
   const handleAddFavorite = (recipeId) => {
+    console.log("Recipe ID: " + recipeId);
     RecipeService.postFavoriteRecipe(recipeId)
       .then(res => {
         console.log(res.data);
         //Sets local state flag to true for Button Display
         res.status === 201 && setIsFavorite(true);
-        console.log(isFavorite);
+        setFavoriteId(res.data.id);
+        console.log("isFavorite: " + isFavorite);
       })
       .catch(err => {
         console.log("Recipe is already a favorite or server cannot be reached.");
+        dispatch({ type: LOADING, loading: false });
       });
   };
 
   //Removes Favorite from your Favorites
   const handleRemoveFavorite = (recipeId) => {
+    dispatch({ type: LOADING, loading: true });
+    console.log(recipeId);
     RecipeService.deleteFavoriteRecipe(recipeId)
-      .then(res => {
-        console.log(res.data);
-        //Sets local state flag to true for Button Display
-        res.status === 204 && setIsFavorite(false);
-        console.log(isFavorite);
+      .then((res) => {
+        console.log(res);
+        setIsFavorite(false);
+        dispatch({ type: LOADING, loading: false });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
+        console.log("DELETE REQUEST, something went wrong");
+        dispatch({ type: LOADING, loading: false });
       });
   };
 
@@ -172,9 +201,6 @@ const Recipe = (props) => {
 
     //Load the Recipe from Back-end
     handleLoadRecipe(recipeId);
-
-    //Set the State's list of Favorites so we can check if this recipe is a favorite already
-    setFavorites();
 
     //Check to see if current recipe is in our favorites
 
@@ -193,13 +219,22 @@ const Recipe = (props) => {
             <strong>Category:</strong> {state.currentRecipe.category.category}
             <br /><img style={{ width: 30 + '%' }} src={"http://images.generictech.org/" + state.currentRecipe.imageLocation} />
             <br />
-            {isFavorite ? (
-              <Button onClick={() =>    { handleRemoveFavorite(props.match.params.id); console.log("isFavorite: " + isFavorite); }} startIcon={<StarIcon />}> Unfavorite</Button>
-            ) : (
-                <Button onClick={() =>  { handleAddFavorite(props.match.params.id); console.log("isFavorite: " + isFavorite); }} startIcon={<StarBorderIcon />}> Favorite</Button>
-              )}
-            <h1>Description:</h1>
-            {state.currentRecipe.description}
+            {!state.loading ? 
+              <React.Fragment>
+                {isFavorite ? (
+                  <Button onClick={() =>   handleRemoveFavorite(favoriteId)} startIcon={<StarIcon />}> Unfavorite</Button>
+                ) : (
+                  <Button onClick={() =>  handleAddFavorite(state.currentRecipe.id)}startIcon={<StarBorderIcon />}> Favorite</Button>
+                )}
+              </React.Fragment>
+              : <div>Loading</div>
+            }
+            {state.currentRecipe.description &&
+            <React.Fragment>
+              <h1>Description:</h1>
+              {state.currentRecipe.description}
+            </React.Fragment>
+            }
             <div id="ingredients-list">
               <h1>Ingredients</h1>
               <ul>
