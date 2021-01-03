@@ -1,8 +1,10 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import ListItemLink from "../components/ListItemLink";
-import Logout from "../components/Logout";
+import ListItemLink from "./ListItemLink";
+import AuthMenu from "./AuthMenu";
 import { useStoreContext } from "../utils/GlobalState";
+import SideNav from "./SideNav";
+import Box from "@material-ui/core/Box";
 
 const Nav = () => {
   const [state, dispatch] = useStoreContext();
@@ -10,48 +12,42 @@ const Nav = () => {
     <Grid
       container
       direction='row'
-      justify='flex-start'
+      justify='space-between'
       alignItems='center'
+      component='nav'
       p={5}>
-      <Grid item>
-        <ListItemLink to='/' primary='Home' />
-      </Grid>
-      <Grid item>
-        <ListItemLink to='/recipe/12' primary='Recipe' />
-      </Grid>
-      <Grid item>
-        <ListItemLink to='/search' primary='Search' />
-      </Grid>
       {state.user ? (
-        <React.Fragment>
-          {state.user.admin ? (
-            <Grid item>
-            <ListItemLink to='/admin' primary='Admin' />
-          </Grid>
-          ) : (
-            <React.Fragment></React.Fragment>
-          )}
+        <Grid item container direction='row' justify='flex-start' xs={8}>
+          <Box display={{ xs: "inline", md: "none" }}>
+            <SideNav />
+          </Box>
           <Grid item>
-            <ListItemLink to='/favorites' primary='Favorites' />
+            <ListItemLink to='/' primary='Cutting Board' />
           </Grid>
           <Grid item>
-            <ListItemLink to='/user-account' primary='User Account' />
+            <Box display={{ xs: "none", md: "block" }}>
+              <ListItemLink to='/favorites' primary='Favorites' />
+            </Box>
           </Grid>
           <Grid item>
-            <Logout />
+            <Box display={{ xs: "none", md: "block" }}>
+              <ListItemLink to='/shoppinglist' primary='Shopping List' />
+            </Box>
           </Grid>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-
-        <Grid item>
-          <ListItemLink to='/login' primary='Login' />
+          <Grid item>
+            <Box display={{ xs: "none", md: "block" }}>
+              <ListItemLink to='/search' primary='Search' />
+            </Box>
+          </Grid>
         </Grid>
-              <Grid item>
-              <ListItemLink to='/signup' primary='Signup' />
-            </Grid>
-        </React.Fragment>
+      ) : (
+        <Grid item>
+          <ListItemLink to='/' primary='Cutting Board' />
+        </Grid>
       )}
+      <Grid item>
+        <AuthMenu />
+      </Grid>
     </Grid>
   );
 };

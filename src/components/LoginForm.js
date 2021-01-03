@@ -28,6 +28,7 @@ const LoginForm = () => {
               user: res.data
             });
             console.log(AuthService.getCurrentUser())
+            history.replace("/");
           })
           .catch(err => {
               console.log(err);
@@ -41,7 +42,6 @@ const LoginForm = () => {
     //Disables Page Reload onSubmit
     event.preventDefault();
     handleLogin(userForm.username, userForm.password);
-    history.replace("/");
 
     const handleFormUpdate = (event, value) => {
         setUserForm({...userForm, value: event.target.value})
