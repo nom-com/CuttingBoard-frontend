@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import RecipeService from "../services/recipe.service";
-import {SET_CURRENT_RECIPE} from "../utils/actions";
+import {SET_CURRENT_RECIPE, SET_FAVORITES} from "../utils/actions";
 import { useStoreContext } from "../utils/GlobalState";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
@@ -105,6 +105,21 @@ const Recipe = (props) => {
   //Contains Bool for whether Recipe is one of your favorites or not
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const setFavorites = () => {
+    RecipeService.getFavoriteRecipes()
+    .then(res => {
+      console.log(res.data);
+      res.status === 200 && dispatch({
+        type: SET_FAVORITES,
+        favorites: res.data,
+      })
+      console.log(res.data);
+    })
+    .catch(err => {
+        console.log(err);
+    });
+  };
+
   const handleLoadRecipe = (recipeId) => {
     RecipeService.getRecipeById(recipeId)
       .then(res => {
@@ -133,17 +148,17 @@ const Recipe = (props) => {
         });
   };
 
-  //const handleLoadFavorite =  
 
   //  useEffect to API get by ID etc...
   useEffect(() => {
     //Get {id} from URL
     const recipeId = props.match.params.id;
 
-    //Make call to backend
+    //Load the Recipe from Back-end
     handleLoadRecipe(recipeId);
-    //TEMPORARY: Set Dummy Data
-    //setRecipeData(correctDummyRecipeObj);
+
+    //Set the State's list of Favorites so we can check if this recipe is a favorite already
+    setFavorites();
 
   }, [] /*Empty Array Ensures Side Effects only occur once, might needs props for dependency*/
   );
