@@ -49,7 +49,7 @@ export default function RecipeGlanceCard(props) {
       <Link to={`/recipe/${props.recipeDetail.id}`}>
       <CardMedia
         className={classes.media}
-        image={props.recipeDetail.imageLocation}
+        image={"http://images.generictech.org/" + props.recipeDetail.imageLocation}
         title={props.recipeDetail.title}
       />
       </Link>

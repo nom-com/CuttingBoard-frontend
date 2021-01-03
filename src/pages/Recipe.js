@@ -97,8 +97,22 @@ import { useStoreContext } from "../utils/GlobalState";
 //Displays a chosen Recipe with id matching www.url.com/recipe/{id}
 const Recipe = (props) => {
   //Contains all Relevant Data for Recipe Display
-  const [recipeData, setRecipeData] = useState({id: null, imageLocation: "", title: "", description: "", publicRecipe: true, ingredients: [], instructions: [], category: {}});
-  const [state, dispatch] = useStoreContext();
+const [state, dispatch] = useStoreContext();
+
+  const handleLoadRecipe = (recipeId) => {
+    RecipeService.getRecipeById(recipeId)
+      .then(res => {
+        console.log(res.data);
+        res.status === 200 && dispatch({
+          type: SET_CURRENT_RECIPE,
+          recipe: res.data
+        });
+        //console.log(RecipeService.getCurrentRecipe());
+      })
+      .catch(err => {
+          console.log(err);
+        });
+  };
 
   //  useEffect to API get by ID etc...
   useEffect(() => {
@@ -106,21 +120,7 @@ const Recipe = (props) => {
     const recipeId = props.match.params.id;
 
     //Make call to backend
-    const handleLoadRecipe = () => {
-      RecipeService.getRecipeById(recipeId)
-        .then(res => {
-          console.log(res);
-          res.status === 200 && dispatch({
-            type: SET_CURRENT_RECIPE,
-            currentRecipe: res.data
-          });
-          console.log(RecipeService.getCurrentRecipe());
-          setRecipeData(res.data);
-        })
-        .catch(err => {
-            console.log(err);
-          });
-    };
+    handleLoadRecipe(recipeId);
     //TEMPORARY: Set Dummy Data
     //setRecipeData(correctDummyRecipeObj);
 
@@ -129,35 +129,43 @@ const Recipe = (props) => {
 
   //When finished, pull apart created JSON obj and display each component
   return (
-    <div className='page-body-content' onLoad={useEffect}>
+    <div className='page-body-content'>
       <Paper>
-        <h1>{recipeData.title}</h1>
-        <h3>Recipe #{recipeData.id}</h3>
-        <strong>Category:</strong> {recipeData.category.category}
-        <br/><img style={{width: 30 + '%'}} src={recipeData.imageLocation}/>
-        <h1>Description:</h1>
-        {recipeData.description}
-        <div id="ingredients-list">
-        <h1>Ingredients</h1>
-          <ul>
-          {recipeData.ingredients.map(ingredient => (
-            <li key={ingredient.amount.ingredient.ingredient}>
-              {ingredient.amount.amount} {ingredient.amount.ingredient.ingredient}
-            </li>
-          ))}
-          </ul>
-        </div>
-        <div id="instructions-list">
-        <h1>Instructions</h1>
-          <ol>
-          {recipeData.instructions.map(instruction => (
-            <li key={instruction.stepOrder}>
-              {instruction.step.step}
-            </li>
-          ))}
-          </ol>
-          <br/><br/>
-        </div>
+        {console.log(state.currentRecipe)}
+        {state.currentRecipe ?
+          <React.Fragment>
+          <h1>{state.currentRecipe.title}</h1>
+          <h3>Recipe #{state.currentRecipe.id}</h3>
+          <strong>Category:</strong> {state.currentRecipe.category.category}
+          <br/><img style={{width: 30 + '%'}} src={"http://images.generictech.org/" + state.currentRecipe.imageLocation}/>
+          <h1>Description:</h1>
+          {state.currentRecipe.description}
+          <div id="ingredients-list">
+          <h1>Ingredients</h1>
+            <ul>
+            {state.currentRecipe.ingredients.map(ingredient => (
+              <li key={ingredient.amount.ingredient.ingredient}>
+                {ingredient.amount.amount} {ingredient.amount.ingredient.ingredient}
+              </li>
+            ))}
+            </ul>
+          </div>
+          <div id="instructions-list">
+          <h1>Instructions</h1>
+            <ol>
+            {state.currentRecipe.instructions.map(instruction => (
+              <li key={instruction.stepOrder}>
+                {instruction.step.step}
+              </li>
+            ))}
+            </ol>
+            <br/><br/>
+          </div>
+          </React.Fragment>
+          : <div>
+            No Recipes Found.
+          </div>
+        }
       </Paper>
     </div>
   );

@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import { useStoreContext } from "../utils/GlobalState";
 import { SET_RECOMMENDED_RECIPES, LOADING } from "../utils/actions";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import RecipeService from "../services/recipe.service";
 
 const dummyRecipeArray = [{
   id: 6,
@@ -94,7 +95,7 @@ const dummyRecipeArray = [{
   }
 },
 {
-  id: 6,
+  id: 7,
   imageLocation: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-190621-homemade-pita-0144-portrait-pf-1567692673.jpg",
   title: "Pita",
   description: "Round pita disks",
@@ -182,7 +183,7 @@ const dummyRecipeArray = [{
   }
 },
 {
-  id: 6,
+  id: 9,
   imageLocation: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-190621-homemade-pita-0144-portrait-pf-1567692673.jpg",
   title: "Pita",
   description: "Round pita disks",
@@ -275,14 +276,29 @@ const RecipeGlanceFrame = () => {
     
   const [state, dispatch] = useStoreContext();
 
+//   const setRecommended = () => {
+//     dispatch({ type: LOADING, loading: true });
+//     setTimeout(function () {
+//       dispatch({
+//         type: SET_RECOMMENDED_RECIPES,
+//         recipes: dummyRecipeArray,
+//       });
+//     }, 1490);
+//   };
+
   const setRecommended = () => {
-    dispatch({ type: LOADING, loading: true });
-    setTimeout(function () {
-      dispatch({
-        type: SET_RECOMMENDED_RECIPES,
-        recipes: dummyRecipeArray,
-      });
-    }, 1490);
+    RecipeService.getAllRecommendedRecipes()
+      .then(res => {
+        console.log(res.data);
+        res.status === 200 && dispatch({
+          type: SET_RECOMMENDED_RECIPES,
+          recipes: res.data
+        });
+        //console.log(RecipeService.getCurrentRecipe());
+      })
+      .catch(err => {
+          console.log(err);
+        });
   };
 
 
@@ -306,7 +322,7 @@ const RecipeGlanceFrame = () => {
             alignItems='center'
             p={5}>{
                 state.recommendedRecipes.length > 0 ? state.recommendedRecipes.map(recipeObj => (
-                    <Grid item>
+                    <Grid item key={recipeObj.id}>
                         <RecipeGlanceCard recipeDetail={recipeObj}/>
                     </Grid>
                 )) : (
