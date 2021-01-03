@@ -37,6 +37,16 @@ class RecipeService {
       headers: authHeader(),
     });
   }
+  getFavoriteRecipes() {
+    return axios.get(API_URL + "favorites/", {
+      headers: authHeader(),
+    });
+  }
+  postFavoriteRecipe(recipeId) {
+    return axios.post(API_URL + "favorites/" +  recipeId, {
+      headers: authHeader(),
+    });
+  }
   putRecipeById(recipeId, recipe) {
     return axios.put(API_URL + "recipe/" + recipeId, recipe, {
       headers: authHeader(),

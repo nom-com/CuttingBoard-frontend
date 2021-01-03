@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
-import { useHistory } from "react-router-dom";
 import RecipeService from "../services/recipe.service";
 import {SET_CURRENT_RECIPE} from "../utils/actions";
 import { useStoreContext } from "../utils/GlobalState";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
+import StarIcon from "@material-ui/icons/Star";
 
 // const correctDummyRecipeObj = {
 //     id: 6,
@@ -97,7 +100,10 @@ import { useStoreContext } from "../utils/GlobalState";
 //Displays a chosen Recipe with id matching www.url.com/recipe/{id}
 const Recipe = (props) => {
   //Contains all Relevant Data for Recipe Display
-const [state, dispatch] = useStoreContext();
+  const [state, dispatch] = useStoreContext();
+
+  //Contains Bool for whether Recipe is one of your favorites or not
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const handleLoadRecipe = (recipeId) => {
     RecipeService.getRecipeById(recipeId)
@@ -113,6 +119,21 @@ const [state, dispatch] = useStoreContext();
           console.log(err);
         });
   };
+
+  const handleAddFavorite = (recipeId) => {
+    RecipeService.postFavoriteRecipe(recipeId)
+      .then(res => {
+        console.log(res.data);
+        res.status === 200 && setIsFavorite(true);
+        console.log(isFavorite);
+        //console.log(RecipeService.getCurrentRecipe());
+      })
+      .catch(err => {
+          console.log(err);
+        });
+  };
+
+  //const handleLoadFavorite =  
 
   //  useEffect to API get by ID etc...
   useEffect(() => {
@@ -138,6 +159,12 @@ const [state, dispatch] = useStoreContext();
           <h3>Recipe #{state.currentRecipe.id}</h3>
           <strong>Category:</strong> {state.currentRecipe.category.category}
           <br/><img style={{width: 30 + '%'}} src={"http://images.generictech.org/" + state.currentRecipe.imageLocation}/>
+          <br/>
+          {isFavorite ? (
+            <Button onClick={() => {setIsFavorite(false)}} endIcon={<StarIcon />}> Unfavorite</Button>
+          ) : (
+            <Button onClick={() => {handleAddFavorite(props.match.params.id); console.log(isFavorite); setIsFavorite(true)}} endIcon={<StarBorderIcon />}> Favorite</Button>
+          )}
           <h1>Description:</h1>
           {state.currentRecipe.description}
           <div id="ingredients-list">
