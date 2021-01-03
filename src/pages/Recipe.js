@@ -1,66 +1,231 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
+import RecipeService from "../services/recipe.service";
+import { SET_CURRENT_RECIPE, SET_FAVORITES } from "../utils/actions";
+import { useStoreContext } from "../utils/GlobalState";
+import Button from "@material-ui/core/Button";
+import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
+import StarIcon from "@material-ui/icons/Star";
 
-const dummyRecipeObj = {
-  id: 12,
-  imageLocation: "https://i2.wp.com/eugeniekitchen.com/wp-content/uploads/2012/12/souffle.jpg?zoom=2.625&w=205",
-  title: "The Perfect Souffle",
-  description: "Souffle is just a matter of time. The time gap from the oven to the table. There is a famous French saying: Le soufflé n’attend pas, on attend le soufflé. Meaning le soufflé doesn’t wait, we (the guests) wait. But today I will not wait for le soufflé, I will make the soufflé.",
-  createdBy: "Nom.com Selects",
-  creationDate: "12/25/2020",
-  category: "French Cuisine",
-  instructions: ["Give Up", "Order Fast Food", "????", "Profit"],
-  ingredients: [{"ingredient": "Butter", "amount": "2 tbsp(30mL)"}, {"ingredient": "Flour", "amount": "2 tbsp(30mL)"}, {"ingredient": "Salt", "amount": "1/2 tsp(2.5mL)"}, {"ingredient": "Milk", "amount": "3/4 cup (175mL)"}, {"ingredient": "Egg Yolk(s)", "amount": "4"}, {"ingredient": "Egg White(s)", "amount": "2", }, {"ingredient": "Cream of Tartar", "amount": "1/4 tsp(1.25mL)"}]
-};
+// const correctDummyRecipeObj = {
+//     id: 6,
+//     imageLocation: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-190621-homemade-pita-0144-portrait-pf-1567692673.jpg",
+//     title: "Pita",
+//     description: "Round pita disks",
+//     publicRecipe: true,
+//     ingredients: [
+//         {
+//             id: 16,
+//             amount: {
+//                 id: 17,
+//                 amount: "1 clove crushed",
+//                 ingredient: {
+//                     id: 1,
+//                     ingredient: "Garlic"
+//                 }
+//             }
+//         },
+//         {
+//             id: 15,
+//             amount: {
+//                 id: 16,
+//                 amount: "2 tbsp",
+//                 ingredient: {
+//                     id: 2,
+//                     ingredient: "Salt"
+//                 }
+//             }
+//         },
+//         {
+//             id: 14,
+//             amount: {
+//                 id: 15,
+//                 amount: "4 cups",
+//                 ingredient: {
+//                     id: 3,
+//                     ingredient: "Flour"
+//                 }
+//             }
+//         }
+//     ],
+//     instructions: [
+//         {
+//             id: 8,
+//             step: {
+//                 id: 6,
+//                 step: "knead until smooth"
+//             },
+//             stepOrder: 1
+//         },
+//         {
+//             id: 9,
+//             step: {
+//                 id: 7,
+//                 step: "let rest for 45-90 min"
+//             },
+//             stepOrder: 2
+//         },
+//         {
+//             id: 10,
+//             step: {
+//                 id: 8,
+//                 step: "punch down dough"
+//             },
+//             stepOrder: 3
+//         },
+//         {
+//             id: 11,
+//             step: {
+//                 id: 9,
+//                 step: "spread dough out and cut into circles, place each on a greased cookie sheet"
+//             },
+//             stepOrder: 4
+//         },
+//         {
+//             id: 12,
+//             step: {
+//                 id: 10,
+//                 step: "bake at 375 for 27-30 min"
+//             },
+//             stepOrder: 5
+//         }
+//     ],
+//     category: {
+//         id: 1,
+//         category: "Bread"
+//     }
+// }
 
 //Displays a chosen Recipe with id matching www.url.com/recipe/{id}
 const Recipe = (props) => {
   //Contains all Relevant Data for Recipe Display
-  const [recipeData, setRecipeData] = useState({id: null, imageLocation: "", title: "", description: "", createdBy: "", creationDate: "", category: "", instructions: [], ingredients: []});
-  
+  const [state, dispatch] = useStoreContext();
+
+  //Contains Bool for whether Recipe is one of your favorites or not
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  //Loads the list of user's favorites
+  const setFavorites = () => {
+    RecipeService.getFavoriteRecipes()
+      .then(res => {
+        console.log(res.data);
+        res.status === 200 && dispatch({
+          type: SET_FAVORITES,
+          favorites: res.data,
+        })
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  //Loads the RecipeData for Display
+  const handleLoadRecipe = (recipeId) => {
+    RecipeService.getRecipeById(recipeId)
+      .then(res => {
+        console.log(res.data);
+        res.status === 200 && dispatch({
+          type: SET_CURRENT_RECIPE,
+          recipe: res.data
+        });
+        //console.log(RecipeService.getCurrentRecipe());
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  //Adds Favorite to your Favorites
+  const handleAddFavorite = (recipeId) => {
+    RecipeService.postFavoriteRecipe(recipeId)
+      .then(res => {
+        console.log(res.data);
+        //Sets local state flag to true for Button Display
+        res.status === 201 && setIsFavorite(true);
+        console.log(isFavorite);
+      })
+      .catch(err => {
+        console.log("Recipe is already a favorite or server cannot be reached.");
+      });
+  };
+
+  //Removes Favorite from your Favorites
+  const handleRemoveFavorite = (recipeId) => {
+    RecipeService.deleteFavoriteRecipe(recipeId)
+      .then(res => {
+        console.log(res.data);
+        //Sets local state flag to true for Button Display
+        res.status === 204 && setIsFavorite(false);
+        console.log(isFavorite);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+
   //  useEffect to API get by ID etc...
   useEffect(() => {
-    //API Call using matching parameter
-    //setRecipeData(doGetRecipe(props.match.params.id));
+    //Get {id} from URL
+    const recipeId = props.match.params.id;
 
-    //TEMPORARY: Set Dummy Data
-    setRecipeData(dummyRecipeObj);
+    //Load the Recipe from Back-end
+    handleLoadRecipe(recipeId);
 
-  }, [props] /*Empty Array Ensures Side Effects only occur once, might needs props for dependency*/
+    //Set the State's list of Favorites so we can check if this recipe is a favorite already
+    setFavorites();
+
+    //Check to see if current recipe is in our favorites
+
+  }, [] /*Empty Array Ensures Side Effects only occur once*/
   );
 
   //When finished, pull apart created JSON obj and display each component
   return (
-    <div className='page-body-content' onLoad={useEffect}>
+    <div className='page-body-content'>
       <Paper>
-        <h1>{recipeData.title}</h1>
-        <h3>Recipe #{recipeData.id}</h3>
-        <strong>Created by:</strong> {recipeData.createdBy}
-        <br/>{recipeData.creationDate}
-        <br/><strong>Category:</strong> {recipeData.category}
-        <br/><img src={recipeData.imageLocation}/>
-        <h1>Description:</h1>
-        {recipeData.description}
-        <div id="ingredients-list">
-        <h1>Ingredients</h1>
-          <ul>
-          {recipeData.ingredients.map(ingredient => (
-            <li key={ingredient.ingredient}>
-              {ingredient.amount} {ingredient.ingredient}
-            </li>
-          ))}
-          </ul>
-        </div>
-        <div id="instructions-list">
-        <h1>Instructions</h1>
-          <ol>
-            {recipeData.instructions.map(instruction => (
-            <li>
-              {(instruction)}
-            </li>
-          ))}
-          </ol>
-        </div>
+        {console.log(state.currentRecipe)}
+        {state.currentRecipe ?
+          <React.Fragment>
+            <h1>{state.currentRecipe.title}</h1>
+            <h3>Recipe #{state.currentRecipe.id}</h3>
+            <strong>Category:</strong> {state.currentRecipe.category.category}
+            <br /><img style={{ width: 30 + '%' }} src={"http://images.generictech.org/" + state.currentRecipe.imageLocation} />
+            <br />
+            {isFavorite ? (
+              <Button onClick={() =>    { handleRemoveFavorite(props.match.params.id); console.log("isFavorite: " + isFavorite); }} startIcon={<StarIcon />}> Unfavorite</Button>
+            ) : (
+                <Button onClick={() =>  { handleAddFavorite(props.match.params.id); console.log("isFavorite: " + isFavorite); }} startIcon={<StarBorderIcon />}> Favorite</Button>
+              )}
+            <h1>Description:</h1>
+            {state.currentRecipe.description}
+            <div id="ingredients-list">
+              <h1>Ingredients</h1>
+              <ul>
+                {state.currentRecipe.ingredients.map(ingredient => (
+                  <li key={ingredient.amount.ingredient.ingredient}>
+                    {ingredient.amount.amount} {ingredient.amount.ingredient.ingredient}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div id="instructions-list">
+              <h1>Instructions</h1>
+              <ol>
+                {state.currentRecipe.instructions.map(instruction => (
+                  <li key={instruction.stepOrder}>
+                    {instruction.step.step}
+                  </li>
+                ))}
+              </ol>
+              <br /><br />
+            </div>
+          </React.Fragment>
+          : <div>
+            No Recipes Found.
+          </div>
+        }
       </Paper>
     </div>
   );
