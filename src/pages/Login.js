@@ -8,13 +8,11 @@ const Landing = () => {
 
   return (
     <div className='page-body-content' align="center">
-      <Container>
         {authState.username ? (
           <div>Welcome back, {authState.username}</div>
         ) : (
           <LoginForm />
         )}
-      </Container>
     </div>
   );
 };
