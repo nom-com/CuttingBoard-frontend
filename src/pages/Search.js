@@ -32,6 +32,7 @@ const Search = () => {
     RecipeService.getRecipeByCategoryId(categoryId)
       .then((res) => {
         console.log(res);
+        setRecipeArr(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -43,6 +44,7 @@ const Search = () => {
     RecipeService.getRecipeBySearch(searchText)
       .then((res) => {
         console.log(res);
+        setRecipeArr(res.data);
       })
       .catch((err) => {
         console.log(err);

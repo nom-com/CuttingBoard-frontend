@@ -21,92 +21,92 @@ import RecipeService from "../services/recipe.service";
 const FavoritesTable = () => {
   const [state, dispatch] = useStoreContext();
 
-  const favoriteRecipes = [
-    {
-      id: 0,
-      recipe: {
-        id: 2,
-        imageLocation: "https://via.placeholder.com/100",
-        title: "f",
-        description: "f",
-        publicRecipe: false,
-        ingredients: [],
-        instructions: [],
-        category: {
-          id: 2,
-          category: "Another Category",
-        },
-      },
-    },
-    {
-      id: 2,
-      recipe: {
-        id: 2,
-        imageLocation: "https://via.placeholder.com/100",
-        title: "f",
-        description: "f",
-        publicRecipe: false,
-        ingredients: [],
-        instructions: [],
-        category: {
-          id: 2,
-          category: "Another Category",
-        },
-      },
-    },
-    {
-      id: 3,
-      recipe: {
-        id: 2,
-        imageLocation: "https://via.placeholder.com/100",
-        title: "f",
-        description: "f",
-        publicRecipe: false,
-        ingredients: [],
-        instructions: [],
-        category: {
-          id: 2,
-          category: "Another Category",
-        },
-      },
-    },
-  ];
+  // const favoriteRecipes = [
+  //   {
+  //     id: 0,
+  //     recipe: {
+  //       id: 2,
+  //       imageLocation: "https://via.placeholder.com/100",
+  //       title: "f",
+  //       description: "f",
+  //       publicRecipe: false,
+  //       ingredients: [],
+  //       instructions: [],
+  //       category: {
+  //         id: 2,
+  //         category: "Another Category",
+  //       },
+  //     },
+  //   },
+  //   {
+  //     id: 2,
+  //     recipe: {
+  //       id: 2,
+  //       imageLocation: "https://via.placeholder.com/100",
+  //       title: "f",
+  //       description: "f",
+  //       publicRecipe: false,
+  //       ingredients: [],
+  //       instructions: [],
+  //       category: {
+  //         id: 2,
+  //         category: "Another Category",
+  //       },
+  //     },
+  //   },
+  //   {
+  //     id: 3,
+  //     recipe: {
+  //       id: 2,
+  //       imageLocation: "https://via.placeholder.com/100",
+  //       title: "f",
+  //       description: "f",
+  //       publicRecipe: false,
+  //       ingredients: [],
+  //       instructions: [],
+  //       category: {
+  //         id: 2,
+  //         category: "Another Category",
+  //       },
+  //     },
+  //   },
+  // ];
 
   //
   const setFavorites = () => {
     dispatch({ type: LOADING, loading: true });
-    // RecipeService.getFavoriteRecipes()
-    //   .then((res) => {
-    //     console.log(res);
-    dispatch({
-      type: SET_FAVORITES,
-      favorites: favoriteRecipes,
-    });
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    //   dispatch({ type: LOADING, loading: false });
-    // });
+    RecipeService.getFavoriteRecipes()
+      .then((res) => {
+        console.log(res);
+        dispatch({
+          type: SET_FAVORITES,
+          favorites: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({ type: LOADING, loading: false });
+      });
   };
 
   // WILL BE AN API CALL
   const removeFavorite = (id) => {
     dispatch({ type: LOADING, loading: true });
-    // RecipeService.deleteFavoriteRecipe(id)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setFavorites();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     console.log("DELETE REQUEST, something went wrong");
-    //     dispatch({ type: LOADING, loading: false });
-    //   });
-    const shorterFavs = state.favorites.filter((fav) => fav.id !== id);
-    dispatch({
-      type: SET_FAVORITES,
-      favorites: shorterFavs,
-    });
+    RecipeService.deleteFavoriteRecipe(id)
+      .then((res) => {
+        console.log(res);
+        setFavorites();
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("DELETE REQUEST, something went wrong");
+        dispatch({ type: LOADING, loading: false });
+      });
+    // const shorterFavs = state.favorites.filter((fav) => fav.id !== id);
+    // dispatch({
+    //   type: SET_FAVORITES,
+    //   favorites: shorterFavs,
+    // });
   };
 
   useEffect(() => {
@@ -144,7 +144,11 @@ const FavoritesTable = () => {
                             <Tooltip title="View favorite">
                               <Link to={`/recipe/${favorite.recipe.id}`}>
                                 <img
-                                  src={favorite.recipe.imageLocation}
+                                  style={{ maxWidth: 100 }}
+                                  src={
+                                    "http://images.generictech.org/" +
+                                    favorite.recipe.imageLocation
+                                  }
                                   alt="placeholder"
                                 />
                               </Link>
