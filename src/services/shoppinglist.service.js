@@ -10,31 +10,28 @@ class ShoppingListService {
     POST, PUT, and DELETE require proper JWT Validation through authHeader service
 
   */
-  // NO BACKEND CONTENT YET
-  //   getAllIngredients() {
-  //     return axios.get(API_URL + "ingredients");
-  //   }
-  //   getIngredientsByString(ingredientSearch) {
-  //     return axios.get(API_URL + "ingredients/" + ingredientSearch);
-  //   }
-  //   getIngredientsById(ingredientId) {
-  //     return axios.get(API_URL + "ingredients/id/" + ingredientId);
-  //   }
-  //   postIngredients(ingredient) {
-  //     return axios.post(API_URL + "ingredients", ingredient, {
-  //       headers: authHeader(),
-  //     });
-  //   }
-  //   putIngredientById(ingredientId, ingredient) {
-  //     return axios.put(API_URL + "ingredients/" + ingredientId, ingredient, {
-  //       headers: authHeader(),
-  //     });
-  //   }
-  //   deleteIngredientById(ingredientId) {
-  //     return axios.delete(API_URL + "ingredients/" + ingredientId, {
-  //       headers: authHeader(),
-  //     });
-  //   }
+  setCurrentList(shoplist) {
+    localStorage.setItem("shopping-list", JSON.stringify(shoplist));
+  }
+  getCurrentList() {
+    return JSON.parse(localStorage.getItem("shopping-list"));
+  }
+  getShoppingList() {
+    return axios.get(API_URL + "shoppinglist");
+  }
+  getShoppingListById(id) {
+    return axios.get(API_URL + "shoppinglist/id/" + id);
+  }
+  postShoppingList(shoppingListObj) {
+    return axios.post(API_URL + "shoppinglist", shoppingListObj, {
+      headers: authHeader(),
+    });
+  }
+  deleteShoppingListById(id) {
+    return axios.delete(API_URL + "shoppinglist/" + id, {
+      headers: authHeader(),
+    });
+  }
 }
 
 export default new ShoppingListService();

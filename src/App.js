@@ -33,20 +33,20 @@ function App() {
         <CssBaseline />
         <ThemeProvider theme={theme}>
           <Router>
-            <div className='wrapper'>
+            <div className="wrapper">
               <Nav />
               <Switch>
-                <Route exact path='/' component={Landing} />
-                <Route exact path='/login' component={Login} />
-                <Route exact path='/signup' component={UserAccountForm} />
-                <Route exact path='/new-recipe' component={NewRecipe}/>
-                <Route exact path='/favorites' component={Favorites}/>
-                <Route exact path='/admin' component={Admin}/>
-                <Route exact path='/recipe/:id' component={Recipe}/>
-                <Route exact path='/search' component={Search}/>
-                <Route exact path='/user-account' component={UserAccount}/>
-                <Route exact path='/shopping-list' component={ShoppingList}/>
-                <Route path='/' render={() => <div>NOTFOUND</div>} />
+                <Route exact path="/" component={Landing} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={UserAccountForm} />
+                <Route exact path="/new-recipe" component={NewRecipe} />
+                <Route exact path="/favorites" component={Favorites} />
+                <Route exact path="/admin" component={Admin} />
+                <Route exact path="/recipe/:id" component={Recipe} />
+                <Route exact path="/search" component={Search} />
+                <Route exact path="/user-account" component={UserAccount} />
+                <Route exact path="/shopping-list" component={ShoppingList} />
+                <Route path="/" render={() => <div>NOTFOUND</div>} />
               </Switch>
               <Footer />
             </div>
