@@ -14,6 +14,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreContext } from "../../utils/GlobalState";
 import { SET_RECIPE_DETAIL } from "../../utils/actions";
 import CategoryService from "../../services/category.service";
+import DebugData from "../DebugData";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -23,14 +24,14 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required("Required"),
   isPublic: Yup.boolean(),
   category: Yup.string().required("Select a recipe category"),
-  categoryId: Yup.number()
+  categoryId: Yup.number(),
 });
 
 const RecipeForm = props => {
   const [state, dispatch] = useStoreContext();
   const [recipeCategory, setRecipeCategory] = useState([]);
 
-  const debug = true;
+  const debug = false;
   const {
     editForm,
     title,
@@ -38,7 +39,7 @@ const RecipeForm = props => {
     description,
     isPublic,
     category,
-    categoryId
+    navigateOnSubmit
   } = props;
 
   const recipeSubmit = (values, { setSubmitting }) => {
@@ -47,28 +48,31 @@ const RecipeForm = props => {
       recipeDetail: values,
     });
     setSubmitting(false);
+    navigateOnSubmit("right")
   };
 
-  const capitalize = (s) => {
-    if (typeof s !== 'string') return ''
-    return s.charAt(0).toUpperCase() + s.slice(1)
-  }
+  const capitalize = s => {
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  };
 
   const getCategories = () => {
-    CategoryService.getAllCategories().then(res => {
-      console.log(res);
-      if (res.data.length > 0){
-        let categoryArr = res.data.map((categoryObj) => {
-          return {
-            value: categoryObj.category,
-            label: capitalize(categoryObj.category),
-            id: categoryObj.id
-          }
-        })
-        setRecipeCategory(categoryArr)
-      }
-    }).catch(err => console.log(err))
-  }
+    CategoryService.getAllCategories()
+      .then(res => {
+        console.log(res);
+        if (res.data.length > 0) {
+          let categoryArr = res.data.map(categoryObj => {
+            return {
+              value: categoryObj.category,
+              label: capitalize(categoryObj.category),
+              id: categoryObj.id,
+            };
+          });
+          setRecipeCategory(categoryArr);
+        }
+      })
+      .catch(err => console.log(err));
+  };
 
   useEffect(() => {
     getCategories();
@@ -76,49 +80,47 @@ const RecipeForm = props => {
 
   return (
     <div className='page-body-content'>
-      <Paper>
-        <Formik
-          initialValues={{
-            title: title || "",
-            imageLocation: imageLocation || "",
-            description: description || "",
-            isPublic: isPublic || false,
-            category: category || "",
-          }}
-          initialTouched={{
-            title: false,
-            imageLocation: false,
-            description: false,
-            isPublic: false,
-            category: false,
-          }}
-          initialErrors={{
-            title: false,
-            imageLocation: false,
-            description: false,
-            isPublic: false,
-            category: false,
-          }}
-          initialStatus={{
-            title: false,
-            imageLocation: false,
-            description: false,
-            isPublic: false,
-            category: false,
-          }}
-          validationSchema={validationSchema}
-          onSubmit={recipeSubmit}>
-          {({
-            values,
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
-            isSubmitting,
-          }) => (
-            <Form
-              noValidate
-              autoComplete='off'
+      <Formik
+        initialValues={{
+          title: title || "",
+          imageLocation: imageLocation || "",
+          description: description || "",
+          isPublic: isPublic || false,
+          category: category || "",
+        }}
+        initialTouched={{
+          title: false,
+          imageLocation: false,
+          description: false,
+          isPublic: false,
+          category: false,
+        }}
+        initialErrors={{
+          title: false,
+          imageLocation: false,
+          description: false,
+          isPublic: false,
+          category: false,
+        }}
+        initialStatus={{
+          title: false,
+          imageLocation: false,
+          description: false,
+          isPublic: false,
+          category: false,
+        }}
+        validationSchema={validationSchema}
+        onSubmit={recipeSubmit}>
+        {({
+          values,
+          touched,
+          errors,
+          handleChange,
+          handleBlur,
+          isSubmitting,
+        }) => (
+          <Form noValidate autoComplete='off'>
+            <Paper
               style={{
                 maxWidth: 600,
                 margin: "auto",
@@ -131,7 +133,7 @@ const RecipeForm = props => {
                 justify='center'
                 alignItems='center'>
                 <Grid item>
-                  <Typography variant='h2'>
+                  <Typography variant='h4'>
                     {editForm ? "Edit Recipe" : "Create Recipe"}
                   </Typography>
                 </Grid>
@@ -262,23 +264,12 @@ const RecipeForm = props => {
                 </Grid>
               </Grid>
               {debug && (
-                <>
-                  <pre style={{ textAlign: "left" }}>
-                    <strong>Values</strong>
-                    <br />
-                    {JSON.stringify(state.recipeDetail, null, 2)}
-                  </pre>
-                  <pre style={{ textAlign: "left" }}>
-                    <strong>Errors</strong>
-                    <br />
-                    {JSON.stringify(errors, null, 2)}
-                  </pre>
-                </>
+                <DebugData values={state.ingredients} errors={errors} />
               )}
-            </Form>
-          )}
-        </Formik>
-      </Paper>
+            </Paper>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

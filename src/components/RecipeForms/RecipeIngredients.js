@@ -10,8 +10,10 @@ import ClearIcon from "@material-ui/icons/Clear";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useStoreContext } from "../../utils/GlobalState";
-import { SET_INGREDIENTS } from "../../utils/actions";
+import { SET_DB_INGREDIENTS, SET_INGREDIENTS } from "../../utils/actions";
 import IngredientService from "../../services/ingredient.service";
+import DebugData from "../DebugData";
+import AddNewIngredient from "./AddNewIngredient";
 
 const validationSchema = Yup.object().shape({
   ingredients: Yup.array().of(
@@ -19,7 +21,7 @@ const validationSchema = Yup.object().shape({
       .shape({
         ingredientName: Yup.string().required("Ingredient is required"),
         ingredientAmount: Yup.string().required("Amount is required"),
-        ingredientId: Yup.number()
+        ingredientId: Yup.number(),
       })
       .test(
         "unique",
@@ -40,32 +42,28 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-const debug = true;
 
-const RecipeIngredients = ({ editForm }) => {
-
+const RecipeIngredients = ({ editForm, navigateOnSubmit }) => {
   const [state, dispatch] = useStoreContext();
-  const [ingredientsAPI, setIngredientsAPI] = useState([
-    { id: 0, ingredientName: "" },
-  ]);
+
+  const debug = false;
 
   const ingredientSubmit = values => {
-
     const parsedIngredients = values.ingredients.map(ingredient => {
       return {
         amount: {
           amount: ingredient.ingredientAmount,
           ingredient: {
-            id: ingredient.ingredientId
-          }
-        }
-      }
-    })
-    console.log(parsedIngredients)
+            id: ingredient.ingredientId,
+          },
+        },
+      };
+    });
     dispatch({
       type: SET_INGREDIENTS,
-      ingredients: parsedIngredients
-    })
+      ingredients: parsedIngredients,
+    });
+    navigateOnSubmit("right");
   };
 
   const getIngredients = () => {
@@ -78,7 +76,11 @@ const RecipeIngredients = ({ editForm }) => {
               ingredientName: ingredientObj.ingredient,
             };
           });
-          setIngredientsAPI([...ingredientsAPI, ...parsedIngredients]);
+
+          dispatch({
+            type: SET_DB_INGREDIENTS,
+            dbIngredients: [...[{ id: 0, ingredientName: "" }], ...parsedIngredients]
+          })
         }
       })
       .then(err => console.log(err));
@@ -90,31 +92,29 @@ const RecipeIngredients = ({ editForm }) => {
 
   return (
     <div className='page-body-content'>
-      <Paper>
-        <Formik
-          initialValues={{
-            ingredients: [
-              {
-                ingredientName: "",
-                ingredientAmount: "",
-                ingredientId: 0
-              },
-            ],
-          }}
-          validationSchema={validationSchema}
-          onSubmit={ingredientSubmit}>
-          {({
-            values,
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
-            isValid,
-            setFieldValue,
-          }) => (
-            <Form
-              noValidate
-              autoComplete='off'
+      <Formik
+        initialValues={{
+          ingredients: [
+            {
+              ingredientName: "",
+              ingredientAmount: "",
+              ingredientId: 0,
+            },
+          ],
+        }}
+        validationSchema={validationSchema}
+        onSubmit={ingredientSubmit}>
+        {({
+          values,
+          touched,
+          errors,
+          handleChange,
+          handleBlur,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form noValidate autoComplete='off'>
+            <Paper
               style={{
                 maxWidth: 600,
                 margin: "auto",
@@ -130,7 +130,7 @@ const RecipeIngredients = ({ editForm }) => {
                     alignItems='center'
                     margin={4}>
                     <Grid item>
-                      <Typography variant='h2'>
+                      <Typography variant='h4'>
                         {editForm ? "Edit " : "Add "}Ingredients
                       </Typography>
                     </Grid>
@@ -162,7 +162,7 @@ const RecipeIngredients = ({ editForm }) => {
                             <Autocomplete
                               name={ingredientName}
                               value={p.ingredientName}
-                              options={ingredientsAPI}
+                              options={state.dbIngredients}
                               getOptionSelected={(option, value) =>
                                 option.ingredientName === value
                               }
@@ -183,7 +183,10 @@ const RecipeIngredients = ({ editForm }) => {
                                     ? newValue.ingredientName
                                     : ""
                                 );
-                                setFieldValue(ingredientId, newValue !== null ? newValue.id : 0)
+                                setFieldValue(
+                                  ingredientId,
+                                  newValue !== null ? newValue.id : 0
+                                );
                               }}
                               renderInput={params => (
                                 <TextField
@@ -267,23 +270,13 @@ const RecipeIngredients = ({ editForm }) => {
                 </Button>
               </Grid>
               {debug && (
-                <>
-                  <pre style={{ textAlign: "left" }}>
-                    <strong>State Ingredients</strong>
-                    <br />
-                    {JSON.stringify(state.ingredients, null, 2)}
-                  </pre>
-                  <pre style={{ textAlign: "left" }}>
-                    <strong>Errors</strong>
-                    <br />
-                    {JSON.stringify(errors, null, 2)}
-                  </pre>
-                </>
+                <DebugData values={state.ingredients} errors={errors} />
               )}
-            </Form>
-          )}
-        </Formik>
-      </Paper>
+            </Paper>
+          </Form>
+        )}
+      </Formik>
+      <AddNewIngredient />
     </div>
   );
 };
