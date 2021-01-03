@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStoreContext } from "../utils/GlobalState";
 import RecipeService from "../services/recipe.service";
 import { Button, TextField, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import SearchIcon from "@material-ui/icons/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import CategoryService from "../../services/category.service";
+import MenuItem from "@material-ui/core/MenuItem";
+import CategoryService from "../services/category.service";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import RecipeGlanceCard from "../components/RecipeGlanceCard";
 
@@ -80,7 +81,7 @@ const Search = () => {
       <Grid
         container
         direction="row"
-        justify="space-between"
+        justify="center"
         alignItems="center"
         component="nav"
         p={5}
@@ -90,7 +91,7 @@ const Search = () => {
             type="search"
             variant="outlined"
             margin="normal"
-            label="Find a Cat"
+            label="Search a recipe"
             value={searchText}
             onChange={handleSearchTextChange}
             InputProps={{
@@ -116,10 +117,7 @@ const Search = () => {
             margin="dense"
             variant="outlined"
             onChange={handleCategoryChange}
-            value={values.category}
-            helperText={
-              touched.category && errors.category ? errors.category : " "
-            }
+            value={categoryId}
             fullWidth
           >
             {recipeCategory.map((option) => (

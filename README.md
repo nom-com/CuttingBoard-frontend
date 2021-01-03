@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# CuttingBoard-frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [About the Project](#about-the-project)
+  - [Responsive ](#responsive-design)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+- [Roadmap](#roadmap)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
-### `npm start`
+## About The Project
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+TBD
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<!-- ![Project Screenshot](TBD) -->
 
-### `npm test`
+### Responsive Design
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Using Material-UI to create seamless responsive design through the use of their design system, web accessibility tools, and component library!
 
-### `npm run build`
+<!-- ![Mobile Phone](public/images/project-mobile-responsive.PNG) -->
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<!-- ![iPad/Tablet](public/images/project-mobile-responsive-tablet.PNG) -->
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Frontend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- React.js
+- Material-UI
+- S3 Amazon Static Web Hosting
 
-### `npm run eject`
+### Backend
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- AWS EC2 Instance hosting
+- RDS Amazon Web Services
+- Jenkins CI/CD Pipelines
+- Java Spring RESTful API
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Features
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- TBD
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<!-- ![Cat Manager UI](public/images/cat-table.gif) -->
 
-## Learn More
+## Roadmap
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Current known issues:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Track [open issues](https://github.com/nom-com/CuttingBoard-frontend/issues)
 
-### Code Splitting
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+MIT License
 
-### Analyzing the Bundle Size
+Copyright (c) 2020 nom-com
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Contact
 
-### Making a Progressive Web App
+<!-- Twitter - [@DanielMont_Eton](https://twitter.com/DanielMont_Eton)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+LinkedIn - [LinkedIn](https://www.linkedin.com/in/daniel-mont-eton-43a81055/) -->
 
-### Advanced Configuration
+## CONTRIBUTIONS
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[CuttingBoard-backend](https://github.com/nom-com/CuttingBoard-backend)
+[jwdavis1989](https://github.com/jwdavis1989)
+[jwilson717](https://github.com/jwilson717)
+[Dreadcyc](https://github.com/Dreadcyc)
+[dansirdan](https://github.com/dansirdan)

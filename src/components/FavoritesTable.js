@@ -75,38 +75,38 @@ const FavoritesTable = () => {
   //
   const setFavorites = () => {
     dispatch({ type: LOADING, loading: true });
-    RecipeService.getFavoriteRecipes()
-      .then((res) => {
-        console.log(res);
-        dispatch({
-          type: SET_FAVORITES,
-          favorites: favoriteRecipes,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch({ type: LOADING, loading: false });
-      });
+    // RecipeService.getFavoriteRecipes()
+    //   .then((res) => {
+    //     console.log(res);
+    dispatch({
+      type: SET_FAVORITES,
+      favorites: favoriteRecipes,
+    });
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   dispatch({ type: LOADING, loading: false });
+    // });
   };
 
   // WILL BE AN API CALL
   const removeFavorite = (id) => {
     dispatch({ type: LOADING, loading: true });
-    RecipeService.deleteFavoriteRecipe(id)
-      .then((res) => {
-        console.log(res);
-        setFavorites();
-      })
-      .catch((err) => {
-        console.log(res);
-        console.log("DELETE REQUEST, something went wrong");
-        dispatch({ type: LOADING, loading: false });
-      });
-    // const shorterFavs = state.favorites.filter((fav) => fav.id !== id);
-    // dispatch({
-    //   type: SET_FAVORITES,
-    //   favorites: shorterFavs,
-    // });
+    // RecipeService.deleteFavoriteRecipe(id)
+    //   .then((res) => {
+    //     console.log(res);
+    //     setFavorites();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     console.log("DELETE REQUEST, something went wrong");
+    //     dispatch({ type: LOADING, loading: false });
+    //   });
+    const shorterFavs = state.favorites.filter((fav) => fav.id !== id);
+    dispatch({
+      type: SET_FAVORITES,
+      favorites: shorterFavs,
+    });
   };
 
   useEffect(() => {
