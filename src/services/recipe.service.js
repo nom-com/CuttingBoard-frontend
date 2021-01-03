@@ -43,7 +43,7 @@ class RecipeService {
     });
   }
   postFavoriteRecipe(recipeId) {
-    return axios.post(API_URL + "favorites/" +  recipeId, {
+    return axios.post(API_URL + "favorites/" +  recipeId, {}, {
       headers: authHeader(),
     });
   }
