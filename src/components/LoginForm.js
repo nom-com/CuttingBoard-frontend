@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import {SET_USER} from "../utils/actions";
 import { useStoreContext } from "../utils/GlobalState";
 import AuthService from "../services/auth.service";
+import { useHistory } from 'react-router-dom'
 
 const LoginForm = () => {
 
@@ -13,6 +14,7 @@ const LoginForm = () => {
   //Temporary storage for the user form
   const [userForm, setUserForm] = useState({username: "", password: ""});
   const [errorMessage, setErrorMessage] = useState("");
+  const history = useHistory();
 
 
     //Updated Login Function
@@ -39,6 +41,7 @@ const LoginForm = () => {
     //Disables Page Reload onSubmit
     event.preventDefault();
     handleLogin(userForm.username, userForm.password);
+    history.replace("/");
 
     const handleFormUpdate = (event, value) => {
         setUserForm({...userForm, value: event.target.value})
