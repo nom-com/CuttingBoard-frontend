@@ -13,6 +13,9 @@ class ShoppingListService {
   setCurrentList(shoplist) {
     localStorage.setItem("shopping-list", JSON.stringify(shoplist));
   }
+  clearList() {
+    localStorage.removeItem("shopping-list");
+  }
   getCurrentList() {
     return JSON.parse(localStorage.getItem("shopping-list"));
   }

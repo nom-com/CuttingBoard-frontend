@@ -6,95 +6,7 @@ import { useStoreContext } from "../utils/GlobalState";
 import Button from "@material-ui/core/Button";
 import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
 import StarIcon from "@material-ui/icons/Star";
-
-// const correctDummyRecipeObj = {
-//     id: 6,
-//     imageLocation: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-190621-homemade-pita-0144-portrait-pf-1567692673.jpg",
-//     title: "Pita",
-//     description: "Round pita disks",
-//     publicRecipe: true,
-//     ingredients: [
-//         {
-//             id: 16,
-//             amount: {
-//                 id: 17,
-//                 amount: "1 clove crushed",
-//                 ingredient: {
-//                     id: 1,
-//                     ingredient: "Garlic"
-//                 }
-//             }
-//         },
-//         {
-//             id: 15,
-//             amount: {
-//                 id: 16,
-//                 amount: "2 tbsp",
-//                 ingredient: {
-//                     id: 2,
-//                     ingredient: "Salt"
-//                 }
-//             }
-//         },
-//         {
-//             id: 14,
-//             amount: {
-//                 id: 15,
-//                 amount: "4 cups",
-//                 ingredient: {
-//                     id: 3,
-//                     ingredient: "Flour"
-//                 }
-//             }
-//         }
-//     ],
-//     instructions: [
-//         {
-//             id: 8,
-//             step: {
-//                 id: 6,
-//                 step: "knead until smooth"
-//             },
-//             stepOrder: 1
-//         },
-//         {
-//             id: 9,
-//             step: {
-//                 id: 7,
-//                 step: "let rest for 45-90 min"
-//             },
-//             stepOrder: 2
-//         },
-//         {
-//             id: 10,
-//             step: {
-//                 id: 8,
-//                 step: "punch down dough"
-//             },
-//             stepOrder: 3
-//         },
-//         {
-//             id: 11,
-//             step: {
-//                 id: 9,
-//                 step: "spread dough out and cut into circles, place each on a greased cookie sheet"
-//             },
-//             stepOrder: 4
-//         },
-//         {
-//             id: 12,
-//             step: {
-//                 id: 10,
-//                 step: "bake at 375 for 27-30 min"
-//             },
-//             stepOrder: 5
-//         }
-//     ],
-//     category: {
-//         id: 1,
-//         category: "Bread"
-//     }
-// }
+import AddToShopList from "../components/AddToShopList";
 
 //Displays a chosen Recipe with id matching www.url.com/recipe/{id}
 const Recipe = (props) => {
@@ -103,24 +15,24 @@ const Recipe = (props) => {
 
   //Contains Bool for whether Recipe is one of your favorites or not
   const [isFavorite, setIsFavorite] = useState(false);
-  const [favoriteId, setFavoriteId] = useState(0);
+  // const [favoriteId, setFavoriteId] = useState(0);
 
-  const getFavoriteId = () => {
-    if (state.favorites.length > 0) {
-      for (let i=0;i<state.favorites.length;i++)
-      {
-        if (state.favorites[i].recipe.id === state.currentRecipe.id){
-          console.log("setIsFavorite Before: " + isFavorite);
-          setFavoriteId(state.favorites[i].id);
-          setIsFavorite(true);
-          console.log("setIsFavorite After: " + isFavorite);
-        }
-      }
-    }
-    else {
-      setIsFavorite(false);
-    }
-  }
+  // const getFavoriteId = () => {
+  //   if (state.favorites.length > 0) {
+  //     for (let i=0;i<state.favorites.length;i++)
+  //     {
+  //       if (state.favorites[i].recipe.id === state.currentRecipe.id){
+  //         console.log("setIsFavorite Before: " + isFavorite);
+  //         setFavoriteId(state.favorites[i].id);
+  //         setIsFavorite(true);
+  //         console.log("setIsFavorite After: " + isFavorite);
+  //       }
+  //     }
+  //   }
+  //   else {
+  //     setIsFavorite(false);
+  //   }
+  // }
   
 
   //Loads the list of user's favorites
@@ -133,7 +45,7 @@ const Recipe = (props) => {
           type: SET_FAVORITES,
           favorites: res.data,
         });
-        getFavoriteId();
+        // getFavoriteId();
       })
       .catch((err) => {
         console.log(err);
@@ -167,31 +79,32 @@ const Recipe = (props) => {
         console.log(res.data);
         //Sets local state flag to true for Button Display
         res.status === 201 && setIsFavorite(true);
-        setFavoriteId(res.data.id);
+        // setFavoriteId(res.data.id);
         console.log("isFavorite: " + isFavorite);
       })
       .catch(err => {
         console.log("Recipe is already a favorite or server cannot be reached.");
         dispatch({ type: LOADING, loading: false });
       });
+      setIsFavorite(true);
   };
 
   //Removes Favorite from your Favorites
-  const handleRemoveFavorite = (recipeId) => {
-    dispatch({ type: LOADING, loading: true });
-    console.log(recipeId);
-    RecipeService.deleteFavoriteRecipe(recipeId)
-      .then((res) => {
-        console.log(res);
-        setIsFavorite(false);
-        dispatch({ type: LOADING, loading: false });
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log("DELETE REQUEST, something went wrong");
-        dispatch({ type: LOADING, loading: false });
-      });
-  };
+  // const handleRemoveFavorite = (recipeId) => {
+  //   dispatch({ type: LOADING, loading: true });
+  //   console.log(recipeId);
+  //   RecipeService.deleteFavoriteRecipe(recipeId)
+  //     .then((res) => {
+  //       console.log(res);
+  //       setIsFavorite(false);
+  //       dispatch({ type: LOADING, loading: false });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       console.log("DELETE REQUEST, something went wrong");
+  //       dispatch({ type: LOADING, loading: false });
+  //     });
+  // };
 
 
   //  useEffect to API get by ID etc...
@@ -221,11 +134,12 @@ const Recipe = (props) => {
             <br />
             {!state.loading ? 
               <React.Fragment>
-                {isFavorite ? (
+                <Button onClick={() =>  handleAddFavorite(state.currentRecipe.id)}startIcon={ isFavorite ? <StarIcon /> : <StarBorderIcon />}>Favorite</Button>
+                {/* {isFavorite ? (
                   <Button onClick={() =>   handleRemoveFavorite(favoriteId)} startIcon={<StarIcon />}> Unfavorite</Button>
                 ) : (
                   <Button onClick={() =>  handleAddFavorite(state.currentRecipe.id)}startIcon={<StarBorderIcon />}> Favorite</Button>
-                )}
+                )} */}
               </React.Fragment>
               : <div>Loading</div>
             }
@@ -241,6 +155,7 @@ const Recipe = (props) => {
                 {state.currentRecipe.ingredients.map(ingredient => (
                   <li key={ingredient.amount.ingredient.ingredient}>
                     {ingredient.amount.amount} {ingredient.amount.ingredient.ingredient}
+                    <AddToShopList ingredientId={ingredient.amount.ingredient.id} />
                   </li>
                 ))}
               </ul>
