@@ -7,8 +7,8 @@ Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
 - [About the Project](#about-the-project)
   - [Responsive ](#responsive-design)
   - [Frontend](#frontend)
-  - [Backend](#backend)
-  - [Features](#features)
+  - [Backend](#backend)\
+  - [Features](#features)\
   -[Screenshots](#screenshots)
 - [Roadmap](#roadmap)
 - [License](#license)
