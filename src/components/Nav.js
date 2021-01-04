@@ -5,6 +5,7 @@ import AuthMenu from "./AuthMenu";
 import { useStoreContext } from "../utils/GlobalState";
 import SideNav from "./SideNav";
 import Box from "@material-ui/core/Box";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   const [state, dispatch] = useStoreContext();
@@ -22,27 +23,57 @@ const Nav = () => {
             <SideNav />
           </Box>
           <Grid item>
-            <ListItemLink to='/' primary='Cutting Board' />
+            <Link to={"/"}>
+              <img
+                alt='Home Nav'
+                src='./images/cutboard.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
           </Grid>
           <Grid item>
             <Box display={{ xs: "none", md: "block" }}>
-              <ListItemLink to='/favorites' primary='Favorites' />
+              <Link to={"/favorites"}>
+              <img
+                alt='Favorites Nav'
+                src='./images/favorites.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
             </Box>
           </Grid>
           <Grid item>
             <Box display={{ xs: "none", md: "block" }}>
-              <ListItemLink to='/shoppinglist' primary='Shopping List' />
+              <Link to={"/shoppinglist"}>
+              <img
+                alt='Shopping List Nav'
+                src='./images/shoplist.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
             </Box>
           </Grid>
           <Grid item>
             <Box display={{ xs: "none", md: "block" }}>
-              <ListItemLink to='/search' primary='Search' />
+              <Link to={"/search"}>
+              <img
+                alt='Search Nav'
+                src='./images/search.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
             </Box>
           </Grid>
         </Grid>
       ) : (
         <Grid item>
-          <ListItemLink to='/' primary='Cutting Board' />
+          <Link to={"/"}>
+          <img
+                alt='cutting board logo'
+                src='./images/cutboard.png'
+                style={{ maxHeight: 55 }}
+              />
+          </Link>
         </Grid>
       )}
       <Grid item>
