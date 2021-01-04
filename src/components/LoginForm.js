@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
 import {SET_USER} from "../utils/actions";
 import { useStoreContext } from "../utils/GlobalState";
 import AuthService from "../services/auth.service";
@@ -15,7 +14,6 @@ const LoginForm = () => {
   const [userForm, setUserForm] = useState({username: "", password: ""});
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
-
 
     //Updated Login Function
     const handleLogin = (username, password) => {
@@ -42,10 +40,6 @@ const LoginForm = () => {
     //Disables Page Reload onSubmit
     event.preventDefault();
     handleLogin(userForm.username, userForm.password);
-
-    const handleFormUpdate = (event, value) => {
-        setUserForm({...userForm, value: event.target.value})
-    }
 }
   return (
     <div id="login-form">

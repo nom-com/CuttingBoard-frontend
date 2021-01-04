@@ -31,8 +31,7 @@ const Landing = () => {
                   direction='column'
                   justify='center'
                   alignItems='center'
-                  item
-                  >
+                  item>
                   <Grid item>
                     <Typography variant='subtitle1'>
                       Welcome back, <b>{state.user.username}</b>
@@ -66,19 +65,31 @@ const Landing = () => {
             ) : (
               <React.Fragment>
                 <Grid item>
-                    <Typography variant='h2' component="h1" align="center">
-                      Cutting Board
-                    </Typography>
-                    <Divider style={{ marginTop: 10, marginBottom: 20 }} />
-                  </Grid>
+                  <Typography variant='h2' component='h1' align='center'>
+                    Cutting Board
+                  </Typography>
+                  <Divider style={{ marginTop: 10, marginBottom: 20 }} />
+                </Grid>
                 <Grid item>
                   <Typography variant='subtitle1' gutterBottom>
-                    <em>Keeping track of recipes can be time consuming</em> so
-                    we decided to do the work for you.
-                  </Typography>
-                  <Typography variant='body1' gutterBottom>
-                    TBD
-                    <em>TBH</em> TBH
+                    Bored of eating the same old foods, night after night?
+                    <br />
+                    New to cooking and eager to learn beginner-friendly recipes?
+                    <br />
+                    Try discovering something new with{" "}
+                    <strong>Cutting Board</strong>!<br />
+                    <p />
+                    Whether you're a Seasoned Chef, or just cutting your teeth
+                    in the world of cooking,
+                    <br />
+                    Cutting Board makes learning new recipes a piece of cake!
+                    <br />
+                    <p />
+                    Our large and easy to use library of recipes allows you to
+                    not only learn,
+                    <br />
+                    but also create countless recipes of your own design!
+                    <br />
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -97,8 +108,8 @@ const Landing = () => {
               </React.Fragment>
             )}
           </Paper>
-          <Grid item xs={12} md={12}> 
-            <RecipeGlanceFrame/>
+          <Grid item xs={12} md={12}>
+            <RecipeGlanceFrame />
           </Grid>
         </Grid>
       </Container>
