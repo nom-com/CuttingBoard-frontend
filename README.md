@@ -15,6 +15,7 @@ Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
 
 ## About The Project
 
+![Mobile Phone](public/cuttingBoard.png)
   Bored of eating the same old foods, night after night?
   New to cooking and eager to learn beginner-friendly recipes?
   Try discovering something new with Cutting Board
@@ -50,7 +51,11 @@ Using Material-UI to create seamless responsive design through the use of their 
 
 ## Features
 
-- TBD
+- Recommends our users' most popular Recipes to you, even if you haven't set up an account.
+- Search Recipes by any field you type into our handy Search feature.
+- Create a Shopping List of products to help you shop.
+- Mobile-friendly.
+- Allows you to set up an account to remember favorite recipes and shopping lists.
 
 <!-- ![Cat Manager UI](public/images/cat-table.gif) -->
 
