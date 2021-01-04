@@ -1,15 +1,16 @@
 # CuttingBoard-frontend
 
 Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
+Working Project Link: http://cuttingboard.generictech.org/
 
 ## Table of Contents
 
 - [About the Project](#about-the-project)
   - [Responsive ](#responsive-design)
   - [Frontend](#frontend)
-  - [Backend](#backend)\
-  - [Features](#features)\
-  -[Screenshots](#screenshots)
+  - [Backend](#backend)
+  - [Features](#features)
+  - [Screenshots](#screenshots)
 - [Roadmap](#roadmap)
 - [License](#license)
 - [Contact](#contact)
