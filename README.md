@@ -15,7 +15,7 @@ Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
 
 ## About The Project
 
-![Mobile Phone](public/cuttingBoard.png)
+[Cutting Board Logo](public/cuttingBoard.png)
   Bored of eating the same old foods, night after night?
   New to cooking and eager to learn beginner-friendly recipes?
   Try discovering something new with Cutting Board
