@@ -72,15 +72,21 @@ const SignUpForm = props => {
     )
       .then(res => {
         if (res.status === 201) {
-          AuthService.setCurrentUser({
-            ...res.data,
-            accessToken: res.headers.token,
-          });
-          dispatch({
-            type: SET_USER,
-            user: res.data,
-          });
-          history.replace("/");
+          AuthService.login(values.username, values.password)
+            .then(resTwo => {
+              AuthService.setCurrentUser({
+                ...resTwo.data,
+                accessToken: resTwo.headers.token,
+              });
+              dispatch({
+                type: SET_USER,
+                user: resTwo.data,
+              });
+              history.replace("/");
+            })
+            .catch(err => {
+              console.log(err);
+            });
         }
       })
       .catch(err => {
@@ -145,15 +151,14 @@ const SignUpForm = props => {
           setStatus,
           isSubmitting,
         }) => (
-          <Form
-            noValidate
-            autoComplete='off'>
-            <Paper style={{
-              maxWidth: 600,
-              margin: "auto",
-              marginTop: 30,
-              padding: 20,
-            }}>
+          <Form noValidate autoComplete='off'>
+            <Paper
+              style={{
+                maxWidth: 600,
+                margin: "auto",
+                marginTop: 30,
+                padding: 20,
+              }}>
               <Grid
                 container
                 direction='row'
