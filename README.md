@@ -58,7 +58,24 @@ Using Material-UI to create seamless responsive design through the use of their 
 - Allows you to set up an account to remember favorite recipes and shopping lists.
 
 <!-- ![Cat Manager UI](public/images/cat-table.gif) -->
+## Screenshots
+Landing:
+![Landing Page Picture](public/images/LandingSS.png)
 
+Recommended Recipes:
+![Recommended Picture](public/images/RecommendedSS.png)
+
+Favorites Manager:
+![Favorites Manager Picture](public/images/FavoritesManagerSS.png)
+
+View Recipe:
+![View Recipe Picture](public/images/RecipeSS.png)
+
+Search Recipes:
+![Search Recipe Picture](public/images/SearchSS.png)
+
+Shopping List:
+![Shopping List Picture](public/images/ShopListSS.png)
 ## Roadmap
 
 Current known issues:
