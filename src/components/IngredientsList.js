@@ -15,27 +15,19 @@ import Typography from "@material-ui/core/Typography";
 import Fade from "@material-ui/core/Fade";
 import Tooltip from "@material-ui/core/Tooltip";
 import ShoppingListService from "../services/shoppinglist.service";
+import SaveButton from "@material-ui/icons/Save";
 
 export default function CheckboxList() {
   const [state, dispatch] = useStoreContext();
 
-  const dummyShoppingListData = [
-    {
-      id: 0,
-      ingredientName: "Garlic",
-      checked: false,
-    },
-    {
-      id: 2,
-      ingredientName: "Parmesan",
-      checked: true,
-    },
-    {
-      id: 3,
-      ingredientName: "Salt",
-      checked: false,
-    },
-  ];
+  const clearShoppingList = () => {
+    ShoppingListService.clearList();
+    getShoppingList();
+  };
+
+  const saveShoppingList = (shopList) => {
+    ShoppingListService.setCurrentList(shopList)
+  }
 
   const getShoppingList = () => {
     const shoppingListLocalStorage = ShoppingListService.getCurrentList();
@@ -43,15 +35,15 @@ export default function CheckboxList() {
     if (!shoppingListLocalStorage) {
       dispatch({ type: LOADING, loading: true });
       ShoppingListService.getShoppingList()
-        .then((res) => {
+        .then(res => {
           console.log(res);
           dispatch({
             type: SET_SHOPPING_LIST,
-            shoppingList: dummyShoppingListData,
+            shoppingList: res.data,
           });
-          ShoppingListService.setCurrentList(dummyShoppingListData);
+          ShoppingListService.setCurrentList(res.data);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     } else {
@@ -64,14 +56,14 @@ export default function CheckboxList() {
   };
 
   // WILL BE AN API CALL
-  const removeFromList = (id) => {
+  const removeFromList = id => {
     // ShoppingListService.deleteShoppingListById(id).then(res => {
     //   console.log(res);
     // }).catch(err => {
     //   console.log(err);
     // });
 
-    const shorterList = state.shoppingList.filter((item) => item.id !== id);
+    const shorterList = state.shoppingList.filter(item => item.id !== id);
     dispatch({
       type: SET_SHOPPING_LIST,
       shoppingList: shorterList,
@@ -83,10 +75,11 @@ export default function CheckboxList() {
     getShoppingList();
   }, []);
 
-  const handleToggle = (value) => () => {
-    value.checked = !value.checked;
-    const updateShoppingList = state.shoppingList.map((item) =>
-      item.id === value.id ? value : item
+  const handleToggle = value => () => {
+    console.log(value)
+    value.ingredient.checked = !value.ingredient.checked;
+    const updateShoppingList = state.shoppingList.map(item =>
+      item.ingredient.id === value.ingredient.id ? value : item
     );
 
     dispatch({
@@ -98,48 +91,68 @@ export default function CheckboxList() {
 
   return (
     <React.Fragment>
+      <Grid container item direction='row' justify='center'>
+        <Grid item>
+          <Tooltip title='Remove From Local Storage'>
+            <IconButton
+              edge='end'
+              aria-label='comments'
+              onClick={clearShoppingList}>
+              <DeleteButton />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+        <Grid item>
+          <Tooltip title='Save to Local Storage'>
+            <IconButton
+              edge='end'
+              aria-label='comments'
+              onClick={() => saveShoppingList(state.shoppingList)}>
+              <SaveButton />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+      </Grid>
       {state.loading ? (
-        <Grid container item direction="row" justify="center">
+        <Grid container item direction='row' justify='center'>
           <Grid item>
-            <CircularProgress color="secondary" />
+            <CircularProgress color='secondary' />
           </Grid>
         </Grid>
       ) : (
-        <Grid container item direction="row" justify="center">
+        <Grid container item direction='row' justify='center'>
           {state.shoppingList.length > 0 ? (
             <Grid item xs={12}>
               <Fade in={!state.loading}>
                 <List>
                   {state.shoppingList.map((value, index) => (
                     <ListItem
-                      key={value.id}
+                      key={value.ingredient.id}
                       role={undefined}
                       dense
                       button
-                      onClick={handleToggle(value)}
-                    >
+                      onClick={handleToggle(value)}>
                       <ListItemIcon>
                         <Checkbox
-                          edge="start"
+                          edge='start'
                           checked={value.checked}
                           tabIndex={-1}
                           disableRipple
                           inputProps={{
-                            "aria-labelledby": `checkbox-list-label-${value.id}`,
+                            "aria-labelledby": `checkbox-list-label-${value.ingredient.id}`,
                           }}
                         />
                       </ListItemIcon>
                       <ListItemText
-                        id={`checkbox-list-label-${value.id}`}
-                        primary={`${value.ingredientName}`}
+                        id={`checkbox-list-label-${value.ingredient.id}`}
+                        primary={`${value.ingredient.ingredient}`}
                       />
                       <ListItemSecondaryAction>
-                        <Tooltip title="Delete from list">
+                        <Tooltip title='Delete from list'>
                           <IconButton
-                            edge="end"
-                            aria-label="comments"
-                            onClick={() => removeFromList(value.id)}
-                          >
+                            edge='end'
+                            aria-label='comments'
+                            onClick={() => removeFromList(value.ingredient.id)}>
                             <DeleteButton />
                           </IconButton>
                         </Tooltip>
@@ -152,13 +165,9 @@ export default function CheckboxList() {
           ) : (
             <React.Fragment>
               <Grid item>
-                <Typography variant="subtitle1">
+                <Typography variant='subtitle1'>
                   No items found in your shopping list
                 </Typography>
-                {/* TO BE DELETED */}
-                <button onClick={() => getShoppingList()}>
-                  POPULATE DUMMY DATA
-                </button>
               </Grid>
             </React.Fragment>
           )}
