@@ -1,17 +1,20 @@
 import React from "react";
-import { useAuthContext } from "../utils/AuthContext";
-import { LOGOUT_USER } from "../utils/actions";
 import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
+import AuthService from "../services/auth.service";
+import { useStoreContext } from "../utils/GlobalState";
+import { UNSET_USER } from "../utils/actions";
 
 const Logout = () => {
-    const [authState, authDispatch] = useAuthContext();
-    
-    return (
-        <Container>
-            <Button onClick={() => authDispatch({ type: LOGOUT_USER })}>Logout</Button>
-        </Container>
-    )
-}
+  const [state, dispatch] = useStoreContext();
+
+  const handleLogout = () => {
+    AuthService.logout();
+    dispatch({
+      type: UNSET_USER,
+    });
+  };
+
+  return <Button onClick={handleLogout}>Logout</Button>;
+};
 
 export default Logout;

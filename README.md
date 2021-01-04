@@ -1,70 +1,107 @@
-# Getting Started with Create React App
+# CuttingBoard-frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [About the Project](#about-the-project)
+  - [Responsive ](#responsive-design)
+  - [Frontend](#frontend)
+  - [Backend](#backend)\
+  - [Features](#features)\
+  -[Screenshots](#screenshots)
+- [Roadmap](#roadmap)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
-### `npm start`
+## About The Project
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![Cutting Board Logo](public/cuttingBoard.png)
+  Bored of eating the same old foods, night after night?
+  New to cooking and eager to learn beginner-friendly recipes?
+  Try discovering something new with Cutting Board
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+  Whether you're a Seasoned Chef, or just cutting your teeth in the world of cooking,<br/>
+  Cutting Board makes learning new recipes a piece of cake!
+  
+  Our large and easy to use library of recipes allows you to not only learn,
+  but also create countless recipes of your own design!
 
-### `npm test`
+<!-- ![Project Screenshot](TBD) -->
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Responsive Design
 
-### `npm run build`
+Using Material-UI to create seamless responsive design through the use of their design system, web accessibility tools, and component library!
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<!-- ![Mobile Phone](public/images/project-mobile-responsive.PNG) -->
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<!-- ![iPad/Tablet](public/images/project-mobile-responsive-tablet.PNG) -->
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Frontend
 
-### `npm run eject`
+- React.js
+- Material-UI
+- S3 Amazon Static Web Hosting
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Backend
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- AWS EC2 Instance hosting
+- RDS Amazon Web Services
+- Jenkins CI/CD Pipelines
+- Java Spring RESTful API
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Features
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Recommends our users' most popular Recipes to you, even if you haven't set up an account.
+- Search Recipes by any field you type into our handy Search feature.
+- Create a Shopping List of products to help you shop.
+- Mobile-friendly.
+- Allows you to set up an account to remember favorite recipes and shopping lists.
 
-## Learn More
+<!-- ![Cat Manager UI](public/images/cat-table.gif) -->
+## Screenshots
+Landing:\
+![Landing Page Picture](public/images/LandingSS.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Recommended Recipes:\
+![Recommended Picture](public/images/RecommendedSS.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Favorites Manager:\
+![Favorites Manager Picture](public/images/FavoritesManagerSS.png)
 
-### Code Splitting
+View Recipe:\
+![View Recipe Picture](public/images/RecipeSS.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Search Recipes:\
+![Search Recipe Picture](public/images/SearchSS.png)
 
-### Analyzing the Bundle Size
+Shopping List:\
+![Shopping List Picture](public/images/ShopListSS.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## Roadmap
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Current known issues:
 
-### Advanced Configuration
+Track [open issues](https://github.com/nom-com/CuttingBoard-frontend/issues)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## License
 
-### Deployment
+MIT License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Copyright (c) 2020 nom-com
 
-### `npm run build` fails to minify
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<!-- Twitter - [@DanielMont_Eton](https://twitter.com/DanielMont_Eton)
+
+LinkedIn - [LinkedIn](https://www.linkedin.com/in/daniel-mont-eton-43a81055/) -->
+
+## CONTRIBUTIONS
+
+[CuttingBoard-backend](https://github.com/nom-com/CuttingBoard-backend)
+[jwdavis1989](https://github.com/jwdavis1989)
+[jwilson717](https://github.com/jwilson717)
+[Dreadcyc](https://github.com/Dreadcyc)
+[dansirdan](https://github.com/dansirdan)

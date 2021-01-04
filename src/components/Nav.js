@@ -1,59 +1,84 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import ListItemLink from "../components/ListItemLink";
-// import AuthMenu from "../components/AuthMenu";
-// import { authContext } from "../contexts/AuthContext";
-import { useAuthContext } from "../utils/AuthContext";
-import Logout from "../components/Logout";
+import ListItemLink from "./ListItemLink";
+import AuthMenu from "./AuthMenu";
+import { useStoreContext } from "../utils/GlobalState";
+import SideNav from "./SideNav";
+import Box from "@material-ui/core/Box";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
-  const [authState, authDispatch] = useAuthContext();
+  const [state, dispatch] = useStoreContext();
   return (
     <Grid
       container
       direction='row'
-      justify='flex-start'
+      justify='space-between'
       alignItems='center'
+      component='nav'
       p={5}>
-      <Grid item>
-        <ListItemLink to='/' primary='Home' />
-      </Grid>
-      <Grid item>
-        <ListItemLink to='/recipe/12' primary='Recipe' />
-      </Grid>
-      <Grid item>
-        <ListItemLink to='/search' primary='Search' />
-      </Grid>
-      {authState.username ? (
-        <React.Fragment>
-          {authState.admin ? (
-            <Grid item>
-            <ListItemLink to='/admin' primary='Admin' />
-          </Grid>
-          ) : (
-            <React.Fragment></React.Fragment>
-          )}
+      {state.user ? (
+        <Grid item container direction='row' justify='flex-start' xs={8}>
+          <Box display={{ xs: "inline", md: "none" }}>
+            <SideNav />
+          </Box>
           <Grid item>
-            <ListItemLink to='/favorites' primary='Favorites' />
+            <Link to={"/"}>
+              <img
+                alt='Home Nav'
+                src='./images/cutboard.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
           </Grid>
           <Grid item>
-            <ListItemLink to='/user-account' primary='User Account' />
+            <Box display={{ xs: "none", md: "block" }}>
+              <Link to={"/favorites"}>
+              <img
+                alt='Favorites Nav'
+                src='./images/favorites.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
+            </Box>
           </Grid>
           <Grid item>
-            <Logout />
+            <Box display={{ xs: "none", md: "block" }}>
+              <Link to={"/shoppinglist"}>
+              <img
+                alt='Shopping List Nav'
+                src='./images/shoplist.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
+            </Box>
           </Grid>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-
-        <Grid item>
-          <ListItemLink to='/login' primary='Login' />
+          <Grid item>
+            <Box display={{ xs: "none", md: "block" }}>
+              <Link to={"/search"}>
+              <img
+                alt='Search Nav'
+                src='./images/search.png'
+                style={{ maxHeight: 55 }}
+              />
+            </Link>
+            </Box>
+          </Grid>
         </Grid>
-              <Grid item>
-              <ListItemLink to='/signup' primary='Signup' />
-            </Grid>
-        </React.Fragment>
+      ) : (
+        <Grid item>
+          <Link to={"/"}>
+          <img
+                alt='cutting board logo'
+                src='./images/cutboard.png'
+                style={{ maxHeight: 55 }}
+              />
+          </Link>
+        </Grid>
       )}
+      <Grid item>
+        <AuthMenu />
+      </Grid>
     </Grid>
   );
 };
