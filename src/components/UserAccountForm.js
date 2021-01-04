@@ -74,7 +74,7 @@ const SignUpForm = props => {
         if (res.status === 201) {
           AuthService.setCurrentUser({
             ...res.data,
-            accessToke: res.headers.token,
+            accessToken: res.headers.token,
           });
           dispatch({
             type: SET_USER,

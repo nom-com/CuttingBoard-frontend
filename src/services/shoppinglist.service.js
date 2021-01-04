@@ -13,14 +13,21 @@ class ShoppingListService {
   setCurrentList(shoplist) {
     localStorage.setItem("shopping-list", JSON.stringify(shoplist));
   }
+  clearList() {
+    localStorage.removeItem("shopping-list");
+  }
   getCurrentList() {
     return JSON.parse(localStorage.getItem("shopping-list"));
   }
   getShoppingList() {
-    return axios.get(API_URL + "shoppinglist");
+    return axios.get(API_URL + "shoppinglist", {
+      headers: authHeader(),
+    });
   }
   getShoppingListById(id) {
-    return axios.get(API_URL + "shoppinglist/id/" + id);
+    return axios.get(API_URL + "shoppinglist/id/" + id, {
+      headers: authHeader(),
+    });
   }
   postShoppingList(shoppingListObj) {
     return axios.post(API_URL + "shoppinglist", shoppingListObj, {

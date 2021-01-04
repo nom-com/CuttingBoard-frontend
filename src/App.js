@@ -45,7 +45,7 @@ function App() {
                 <Route exact path="/recipe/:id" component={Recipe} />
                 <Route exact path="/search" component={Search} />
                 <Route exact path="/user-account" component={UserAccount} />
-                <Route exact path="/shopping-list" component={ShoppingList} />
+                <Route exact path="/shoppinglist" component={ShoppingList} />
                 <Route path="/" render={() => <div>NOTFOUND</div>} />
               </Switch>
               <Footer />
