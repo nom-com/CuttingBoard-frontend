@@ -1,6 +1,6 @@
 # CuttingBoard-frontend
 
-Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
+Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)\
 Working Project Link: http://cuttingboard.generictech.org/
 
 ## Table of Contents
