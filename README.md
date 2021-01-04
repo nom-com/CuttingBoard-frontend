@@ -15,7 +15,15 @@ Explore the [project page](https://github.com/nom-com/CuttingBoard-frontend)
 
 ## About The Project
 
-TBD
+  Bored of eating the same old foods, night after night?
+  New to cooking and eager to learn beginner-friendly recipes?
+  Try discovering something new with Cutting Board
+
+  Whether you're a Seasoned Chef, or just cutting your teeth in the world of cooking,<br/>
+  Cutting Board makes learning new recipes a piece of cake!
+  
+  Our large and easy to use library of recipes allows you to not only learn,
+  but also create countless recipes of your own design!
 
 <!-- ![Project Screenshot](TBD) -->
 
