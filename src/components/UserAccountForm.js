@@ -34,7 +34,7 @@ const SignUpForm = props => {
   const [state, dispatch] = useStoreContext();
   const history = useHistory();
 
-  const { username, email, firstName, lastName, password, editForm } = props;
+  const { username, email, firstName, lastName, password } = props;
 
   const checkUniqueUsername = (usernameTest, setFieldError, setStatus) => {
     if (usernameTest.length < 8) {
@@ -84,7 +84,7 @@ const SignUpForm = props => {
         }
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
         if (err.response) {
           if (err.response.data === "User already exists.") {
             setFieldError("username", "That username already exists.");

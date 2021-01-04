@@ -10,10 +10,12 @@ import RecipeService from "../../services/recipe.service";
 import DebugData from "../DebugData";
 import { UNSET_INGREDIENTS, UNSET_INSTRUCTIONS, UNSET_RECIPE_DETAIL } from "../../utils/actions";
 import { Delete } from "@material-ui/icons";
+import { useHistory } from 'react-router-dom'
 
 const FinalSubmitRecipeForm = ({navigateOnSubmit}) => {
-  const debug = true;
+  const debug = false;
   const [state, dispatch] = useStoreContext();
+  const history = useHistory();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -29,6 +31,7 @@ const FinalSubmitRecipeForm = ({navigateOnSubmit}) => {
     })
       .then(res => {
         console.log(res.status);
+        history.replace('/favorites')
       })
       .catch(err => console.log(err));
   };

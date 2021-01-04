@@ -25,11 +25,11 @@ const AddNewIngredient = ({ ingredient, editForm }) => {
   const debug = false;
 
   const ingredientSubmit = (values, { setSubmitting, setFieldError }) => {
-    console.log(values);
+    // console.log(values);
 
     IngredientService.postIngredient(values)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         res.status === 201 &&
           IngredientService.getAllIngredients().then(res => {
             if (res.data.length > 0) {

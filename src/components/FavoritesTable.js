@@ -77,14 +77,14 @@ const FavoritesTable = () => {
     dispatch({ type: LOADING, loading: true });
     RecipeService.getFavoriteRecipes()
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         dispatch({
           type: SET_FAVORITES,
           favorites: res.data,
         });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         dispatch({ type: LOADING, loading: false });
       });
   };
@@ -94,12 +94,12 @@ const FavoritesTable = () => {
     dispatch({ type: LOADING, loading: true });
     RecipeService.deleteFavoriteRecipe(id)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setFavorites();
       })
       .catch((err) => {
-        console.log(err);
-        console.log("DELETE REQUEST, something went wrong");
+        // console.log(err);
+        // console.log("DELETE REQUEST, something went wrong");
         dispatch({ type: LOADING, loading: false });
       });
     // const shorterFavs = state.favorites.filter((fav) => fav.id !== id);

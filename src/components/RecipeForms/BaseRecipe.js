@@ -59,7 +59,7 @@ const RecipeForm = props => {
   const getCategories = () => {
     CategoryService.getAllCategories()
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.length > 0) {
           let categoryArr = res.data.map(categoryObj => {
             return {

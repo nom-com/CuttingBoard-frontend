@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useStoreContext } from "../utils/GlobalState";
 import RecipeService from "../services/recipe.service";
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import SearchIcon from "@material-ui/icons/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -11,10 +11,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import RecipeGlanceCard from "../components/RecipeGlanceCard";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
+
 const Search = () => {
   const [state, dispatch] = useStoreContext();
   const [searchText, setSearchText] = useState("");
-  const [categoryId, setCategoryId] = useState(0);
+  const [categoryId, setCategoryId] = useState("");
   const [recipeCategory, setRecipeCategory] = useState([]);
   const [recipeArr, setRecipeArr] = useState([]);
 
@@ -24,8 +26,8 @@ const Search = () => {
   };
 
   const handleCategoryChange = e => {
-    const categoryId = e.target.value;
-    setCategoryId(categoryId);
+    const catId = e.target.value;
+    setCategoryId(catId);
   };
 
   const handleCategorySubmit = e => {
@@ -159,12 +161,14 @@ const Search = () => {
               spacing={2}>
               {recipeArr.length > 0 ? (
                 recipeArr.map(recipeObj => (
-                  <Grid item  item xs={12} sm={6} md={4}>
+                  <Grid item item xs={12} sm={6} md={4}>
                     <RecipeGlanceCard recipeDetail={recipeObj} />
                   </Grid>
                 ))
               ) : (
-                <div>No Recipes Found.</div>
+                <Grid item xs={12}>
+                  <Typography variant='subtitle1' align="center">No Recipes Found.</Typography>
+                </Grid>
               )}
             </Grid>
           )}
