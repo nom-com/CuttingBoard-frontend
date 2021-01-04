@@ -13,7 +13,7 @@ const RecipeGlanceFrame = () => {
   const setRecommended = () => {
     RecipeService.getAllRecommendedRecipes()
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         res.status === 200 &&
           dispatch({
             type: SET_RECOMMENDED_RECIPES,
@@ -44,7 +44,7 @@ const RecipeGlanceFrame = () => {
           direction='row'
           justify='center'
           alignItems='center'
-          p={5}>
+          p={5} spacing={3}>
           <Grid item xs={12}>
             <Typography variant='h2' align='center'>
               Recommended Recipes

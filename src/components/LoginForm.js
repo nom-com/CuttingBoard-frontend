@@ -19,17 +19,17 @@ const LoginForm = () => {
     const handleLogin = (username, password) => {
         AuthService.login(username, password)
           .then(res => {
-            console.log(res);
+            // console.log(res);
             res.status === 200 && AuthService.setCurrentUser({...res.data, accessToken: res.headers.token }) 
             res.status === 200 && dispatch({
               type: SET_USER,
               user: res.data
             });
-            console.log(AuthService.getCurrentUser())
+            // console.log(AuthService.getCurrentUser())
             history.replace("/");
           })
           .catch(err => {
-              console.log(err);
+              // console.log(err);
               //Displays Error Message
               setErrorMessage("Incorrect Username or Password");
             });

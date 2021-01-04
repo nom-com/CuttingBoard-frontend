@@ -16,6 +16,7 @@ import Fade from "@material-ui/core/Fade";
 import Tooltip from "@material-ui/core/Tooltip";
 import ShoppingListService from "../services/shoppinglist.service";
 import SaveButton from "@material-ui/icons/Save";
+import LoadButton from "@material-ui/icons/Refresh";
 
 export default function CheckboxList() {
   const [state, dispatch] = useStoreContext();
@@ -25,50 +26,68 @@ export default function CheckboxList() {
     getShoppingList();
   };
 
-  const saveShoppingList = (shopList) => {
-    ShoppingListService.setCurrentList(shopList)
-  }
+  const saveShoppingList = shopList => {
+    // console.log(shopList);
+    ShoppingListService.setCurrentList(shopList);
+  };
+
+  const loadShoppingList = () => {
+    const shoppingListLocalStorage = ShoppingListService.getCurrentList();
+    dispatch({
+      type: SET_SHOPPING_LIST,
+      shoppingList: shoppingListLocalStorage,
+    });
+  };
+
+  const getFromDataBase = () => {
+    dispatch({ type: LOADING, loading: true });
+    ShoppingListService.getShoppingList()
+      .then(res => {
+        // console.log(res);
+
+        dispatch({
+          type: SET_SHOPPING_LIST,
+          shoppingList: res.data.map(ingredient => {
+            return {
+              id: ingredient.id,
+              ingredient: {
+                checked: ingredient.ingredient.checked,
+                id: ingredient.ingredient.id,
+                ingredient: ingredient.ingredient.ingredient,
+              },
+            };
+          }),
+        });
+        ShoppingListService.setCurrentList(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   const getShoppingList = () => {
-    const shoppingListLocalStorage = ShoppingListService.getCurrentList();
 
-    if (!shoppingListLocalStorage) {
-      dispatch({ type: LOADING, loading: true });
-      ShoppingListService.getShoppingList()
-        .then(res => {
-          console.log(res);
-          dispatch({
-            type: SET_SHOPPING_LIST,
-            shoppingList: res.data,
-          });
-          ShoppingListService.setCurrentList(res.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    } else {
-      dispatch({ type: LOADING, loading: true });
-      dispatch({
-        type: SET_SHOPPING_LIST,
-        shoppingList: shoppingListLocalStorage,
-      });
-    }
+      getFromDataBase();
+
   };
 
   // WILL BE AN API CALL
   const removeFromList = id => {
-    // ShoppingListService.deleteShoppingListById(id).then(res => {
-    //   console.log(res);
-    // }).catch(err => {
-    //   console.log(err);
-    // });
+    ShoppingListService.deleteShoppingListById(id)
+      .then(res => {
+        // console.log(res);
+        getShoppingList();
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
-    const shorterList = state.shoppingList.filter(item => item.id !== id);
-    dispatch({
-      type: SET_SHOPPING_LIST,
-      shoppingList: shorterList,
-    });
-    ShoppingListService.setCurrentList(shorterList);
+    // const shorterList = state.shoppingList.filter(item => item.id !== id);
+    // dispatch({
+    //   type: SET_SHOPPING_LIST,
+    //   shoppingList: shorterList,
+    // });
+    // ShoppingListService.setCurrentList(shorterList);
   };
 
   useEffect(() => {
@@ -76,12 +95,10 @@ export default function CheckboxList() {
   }, []);
 
   const handleToggle = value => () => {
-    console.log(value)
     value.ingredient.checked = !value.ingredient.checked;
     const updateShoppingList = state.shoppingList.map(item =>
       item.ingredient.id === value.ingredient.id ? value : item
     );
-
     dispatch({
       type: SET_SHOPPING_LIST,
       shoppingList: updateShoppingList,
@@ -109,6 +126,16 @@ export default function CheckboxList() {
               aria-label='comments'
               onClick={() => saveShoppingList(state.shoppingList)}>
               <SaveButton />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+        <Grid item>
+          <Tooltip title='Load from Local Storage'>
+            <IconButton
+              edge='end'
+              aria-label='comments'
+              onClick={loadShoppingList}>
+              <LoadButton />
             </IconButton>
           </Tooltip>
         </Grid>
@@ -152,7 +179,7 @@ export default function CheckboxList() {
                           <IconButton
                             edge='end'
                             aria-label='comments'
-                            onClick={() => removeFromList(value.ingredient.id)}>
+                            onClick={() => removeFromList(value.id)}>
                             <DeleteButton />
                           </IconButton>
                         </Tooltip>
